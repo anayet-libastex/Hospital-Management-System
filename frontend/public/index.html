@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* Full-page background */
+    body {
+      background-image: url('https://images.unsplash.com/photo-1530023367847-a683933f4172?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    /* Dark overlay for readability */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 0;
+    }
+
+    /* Keep content above overlay */
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navbar height increased */
+    .navbar-height {
+      min-height: 80px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Form card – clean white with slight shadow */
+    .form-container {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .hidden-form {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar with increased height -->
+  <nav class="navbar-height flex items-center">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-hospital text-blue-600 text-3xl"></i>
+        <span class="text-2xl font-semibold text-gray-800">HMS</span>
+      </div>
+      <div id="navButtons">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-4 py-8 flex items-center justify-center min-h-[calc(100vh-160px)]">
+    <div class="w-full max-w-md p-8 form-container">
+
+      <!-- Tabs -->
+      <div class="flex border-b border-gray-200 mb-6">
+        <button id="loginTab" class="flex-1 py-2 text-center font-medium text-blue-600 border-b-2 border-blue-600 transition">
+          Login
+        </button>
+        <button id="registerTab" class="flex-1 py-2 text-center font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 transition">
+          Register
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginForm" class="form-section">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+        <form id="loginFormElement">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition">
+            Login
+          </button>
+          <div id="loginError" class="error-msg mt-2 text-center"></div>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" class="form-section hidden-form">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Create Patient Account</h2>
+        <form id="registerFormElement">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Full Name</label>
+            <input type="text" id="regName" placeholder="John Doe" required
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Email</label>
+            <input type="email" id="regEmail" placeholder="you@example.com" required
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+            <input type="password" id="regPassword" placeholder="••••••••" required minlength="6"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Phone</label>
+            <input type="tel" id="regPhone" placeholder="+880 1234 567890"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Date of Birth</label>
+            <input type="date" id="regDob"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Blood Group</label>
+            <select id="regBloodGroup" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Select</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition">
+            Register
+          </button>
+          <div id="registerError" class="error-msg mt-2 text-center"></div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ✅ Everything is now a module -->
+  <script type="module">
+    // Import the needed functions directly
+    import { loginUser, registerPatient } from '../assets/js/auth.js';
+
+    // ---------- DOM References ----------
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginFormElement = document.getElementById('loginFormElement');
+    const registerFormElement = document.getElementById('registerFormElement');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+    const navButtons = document.getElementById('navButtons');
+
+    // ---------- Check if already logged in ----------
+    (function checkAuth() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || 'null');
+      if (token && user) {
+        const role = user.role;
+        const dashMap = {
+          admin: 'admin-dashboard.html',
+          doctor: 'doctor-dashboard.html',
+          labstaff: 'lab-dashboard.html',
+          patient: 'patient-dashboard.html'
+        };
+        window.location.href = dashMap[role] || 'index.html';
+      }
+    })();
+
+    // ---------- Tab switching ----------
+    loginTab.addEventListener('click', () => {
+      loginTab.className = 'flex-1 py-2 text-center font-medium text-blue-600 border-b-2 border-blue-600 transition';
+      registerTab.className = 'flex-1 py-2 text-center font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 transition';
+      loginForm.classList.remove('hidden-form');
+      registerForm.classList.add('hidden-form');
+      loginError.textContent = '';
+      registerError.textContent = '';
+    });
+
+    registerTab.addEventListener('click', () => {
+      registerTab.className = 'flex-1 py-2 text-center font-medium text-blue-600 border-b-2 border-blue-600 transition';
+      loginTab.className = 'flex-1 py-2 text-center font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 transition';
+      registerForm.classList.remove('hidden-form');
+      loginForm.classList.add('hidden-form');
+      loginError.textContent = '';
+      registerError.textContent = '';
+    });
+
+    // ---------- Login handler ----------
+    loginFormElement.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.textContent = '';
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      try {
+        const data = await loginUser(email, password);
+        handleLoginSuccess(data);
+      } catch (err) {
+        loginError.textContent = err.message;
+      }
+    });
+
+    // ---------- Register handler ----------
+    registerFormElement.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      registerError.textContent = '';
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const phone = document.getElementById('regPhone').value.trim();
+      const dateOfBirth = document.getElementById('regDob').value;
+      const bloodGroup = document.getElementById('regBloodGroup').value;
+      if (!name || !email || !password) {
+        registerError.textContent = 'Please fill in all required fields.';
+        return;
+      }
+      try {
+        const data = await registerPatient(name, email, password, phone, dateOfBirth, bloodGroup);
+        handleLoginSuccess(data);
+      } catch (err) {
+        registerError.textContent = err.message;
+      }
+    });
+
+    // ---------- After successful login/register ----------
+    function handleLoginSuccess(data) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      document.querySelector('.form-container').innerHTML = `
+        <div class="text-center py-8">
+          <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
+          <p class="text-lg font-medium text-gray-700">Welcome, ${data.user.name || 'User'}!</p>
+          <p class="text-sm text-gray-500 mt-2">Redirecting to your dashboard…</p>
+        </div>
+      `;
+      setTimeout(() => {
+        const role = data.user.role;
+        const dashMap = {
+          admin: 'admin-dashboard.html',
+          doctor: 'doctor-dashboard.html',
+          labstaff: 'lab-dashboard.html',
+          patient: 'patient-dashboard.html'
+        };
+        window.location.href = dashMap[role] || 'index.html';
+      }, 1500);
+    }
+
+    // ---------- Update nav ----------
+    (function updateNav() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || 'null');
+      if (token && user) {
+        navButtons.innerHTML = `
+          <span class="text-sm text-gray-600">Welcome, ${user.name || user.email}</span>
+          <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-3 py-1 rounded transition">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        `;
+      } else {
+        navButtons.innerHTML = `<span class="text-sm text-gray-600">Not logged in</span>`;
+      }
+    })();
+
+    // Global logout (now we can define it inside module and expose it to window if needed)
+    window.logout = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    };
+  </script>
+</body>
+</html>

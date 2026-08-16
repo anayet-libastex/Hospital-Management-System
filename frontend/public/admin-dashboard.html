@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – HMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ---------- SIDEBAR ---------- */
+    .sidebar {
+      background: #1e293b;
+      color: #e2e8f0;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar-brand {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      height: 72px;
+    }
+    .sidebar-brand i {
+      font-size: 1.75rem;
+      color: #60a5fa;
+    }
+    .sidebar-brand span {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+    }
+    .sidebar-user {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sidebar-user .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      background: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .sidebar-user .user-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: white;
+    }
+    .sidebar-user .user-role {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .sidebar-nav {
+      flex: 1;
+      padding: 1rem 0.75rem;
+      overflow-y: auto;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      border-radius: 0.5rem;
+      color: #cbd5e1;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .sidebar-link:hover {
+      background: #334155;
+      color: #f1f5f9;
+    }
+    .sidebar-link.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .sidebar-link i {
+      width: 1.5rem;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .sidebar-footer {
+      border-top: 1px solid #334155;
+      padding: 1rem 1.5rem;
+    }
+    .sidebar-footer button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 0.5rem;
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-footer button:hover {
+      background: #334155;
+      color: white;
+    }
+
+    /* ---------- MAIN CONTENT ---------- */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f1f5f9;
+    }
+    .top-bar {
+      background: white;
+      padding: 1rem 1.5rem;
+      height: 72px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .top-bar h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .top-bar .welcome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .top-bar .welcome span:first-child {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    .top-bar .welcome span:last-child {
+      color: #1e293b;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .content-area {
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    /* ---------- UTILITY ---------- */
+    .tab-content {
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .stat-card {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border-left: 4px solid #2563eb;
+      transition: 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .form-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+    }
+    .input-field {
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      width: 100%;
+      outline: none;
+      transition: 0.2s;
+    }
+    .input-field:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-success {
+      background: #16a34a;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-success:hover { background: #15803d; }
+    .list-item {
+      background: white;
+      padding: 1rem 1.25rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid #2563eb;
+    }
+    .error-msg {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      display: none;
+      margin-bottom: 1rem;
+    }
+    .error-msg.show { display: block; }
+
+    /* Scrollbar */
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #475569; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+<div class="flex">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <i class="fas fa-hospital"></i>
+      <span>HMS Admin</span>
+    </div>
+
+    <!-- User -->
+    <div class="sidebar-user">
+      <div class="avatar" id="userInitial">A</div>
+      <div>
+        <div class="user-name" id="userName">Admin</div>
+        <div class="user-role">Administrator</div>
+      </div>
+    </div>
+
+    <!-- Nav (✅ এখানে return false; যোগ করা হয়েছে) -->
+    <nav class="sidebar-nav">
+      <a href="#" onclick="switchTab('tabReports'); return false;" class="sidebar-link active" data-tab="tabReports">
+        <i class="fas fa-chart-pie"></i> Dashboard
+      </a>
+      <a href="#" onclick="switchTab('tabDoctors'); return false;" class="sidebar-link" data-tab="tabDoctors">
+        <i class="fas fa-user-md"></i> Doctors
+      </a>
+      <a href="#" onclick="switchTab('tabStaff'); return false;" class="sidebar-link" data-tab="tabStaff">
+        <i class="fas fa-user-nurse"></i> Lab Staff
+      </a>
+      <a href="#" onclick="switchTab('tabDepartments'); return false;" class="sidebar-link" data-tab="tabDepartments">
+        <i class="fas fa-building"></i> Departments
+      </a>
+      <a href="#" onclick="switchTab('tabPatients'); return false;" class="sidebar-link" data-tab="tabPatients">
+        <i class="fas fa-users"></i> Patients
+      </a>
+      <a href="#" onclick="switchTab('tabUserManagement'); return false;" class="sidebar-link" data-tab="tabUserManagement">
+        <i class="fas fa-user-plus"></i> User Management
+      </a>
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <button onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main-area">
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="welcome">
+        <span>Welcome back,</span>
+        <span id="userNameTop">Admin</span>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content-area">
+
+      <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
+
+      <!-- ===== TAB: Reports ===== -->
+      <div id="tabReports" class="tab-content">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Dashboard Overview</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          <div class="stat-card border-l-blue-500"><span class="text-gray-500 text-sm">Patients</span><div id="totalPatients" class="text-2xl font-bold">0</div></div>
+          <div class="stat-card border-l-green-500"><span class="text-gray-500 text-sm">Doctors</span><div id="totalDoctors" class="text-2xl font-bold">0</div></div>
+          <div class="stat-card border-l-purple-500"><span class="text-gray-500 text-sm">Lab Staff</span><div id="totalStaff" class="text-2xl font-bold">0</div></div>
+          <div class="stat-card border-l-yellow-500"><span class="text-gray-500 text-sm">Departments</span><div id="totalDepartments" class="text-2xl font-bold">0</div></div>
+          <div class="stat-card border-l-red-500"><span class="text-gray-500 text-sm">Appointments</span><div id="totalAppointments" class="text-2xl font-bold">0</div></div>
+        </div>
+        <div class="mt-6 bg-white p-6 rounded-xl shadow-sm">
+          <h3 class="font-semibold text-gray-700">Recent Activity</h3>
+          <p class="text-gray-500 text-sm mt-1">No recent activity to show.</p>
+        </div>
+      </div>
+
+      <!-- ===== TAB: Doctors ===== -->
+      <div id="tabDoctors" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Manage Doctors</h2>
+        <div class="form-card">
+          <form id="createDoctorForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <input name="name" placeholder="Full Name" required class="input-field">
+              <input name="email" type="email" placeholder="Email" required class="input-field">
+              <input name="password" type="password" placeholder="Password" required class="input-field">
+              <input name="specialization" placeholder="Specialization" required class="input-field">
+              <input name="departmentId" placeholder="Department ID" required class="input-field">
+              <input name="qualification" placeholder="Qualification" class="input-field">
+              <input name="phone" placeholder="Phone" class="input-field">
+              <input name="address" placeholder="Address" class="input-field">
+            </div>
+            <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Doctor</button>
+          </form>
+        </div>
+        <div id="doctorList" class="space-y-3"></div>
+      </div>
+
+      <!-- ===== TAB: Staff ===== -->
+      <div id="tabStaff" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Manage Lab Staff</h2>
+        <div class="form-card">
+          <form id="createStaffForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <input name="name" placeholder="Full Name" required class="input-field">
+              <input name="email" type="email" placeholder="Email" required class="input-field">
+              <input name="password" type="password" placeholder="Password" required class="input-field">
+              <input name="departmentId" placeholder="Department ID" required class="input-field">
+              <input name="qualification" placeholder="Qualification" class="input-field">
+              <input name="phone" placeholder="Phone" class="input-field">
+              <input name="address" placeholder="Address" class="input-field">
+            </div>
+            <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Staff</button>
+          </form>
+        </div>
+        <div id="staffList" class="space-y-3"></div>
+      </div>
+
+      <!-- ===== TAB: Departments ===== -->
+      <div id="tabDepartments" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Manage Departments</h2>
+        <div class="form-card">
+          <form id="createDeptForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input name="name" placeholder="Department Name" required class="input-field">
+              <input name="description" placeholder="Description" class="input-field">
+              <input name="headDoctor" placeholder="Head Doctor ID" class="input-field">
+            </div>
+            <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Department</button>
+          </form>
+        </div>
+        <div id="deptList" class="space-y-3"></div>
+      </div>
+
+      <!-- ===== TAB: Patients ===== -->
+      <div id="tabPatients" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Manage Patients</h2>
+        <div id="patientList" class="space-y-3"></div>
+      </div>
+
+      <!-- ===== TAB: User Management ===== -->
+      <div id="tabUserManagement" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Create New User</h2>
+        <div class="form-card">
+          <form id="createUserForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <input name="name" placeholder="Full Name" required class="input-field">
+              <input name="email" type="email" placeholder="Email" required class="input-field">
+              <input name="password" type="password" placeholder="Password" required class="input-field">
+              <select name="role" required class="input-field">
+                <option value="">Select Role</option>
+                <option value="doctor">Doctor</option>
+                <option value="labstaff">Lab Staff</option>
+              </select>
+              <input name="specialization" placeholder="Specialization (doctor)" class="input-field">
+              <input name="departmentId" placeholder="Department ID" required class="input-field">
+              <input name="qualification" placeholder="Qualification" class="input-field">
+              <input name="phone" placeholder="Phone" class="input-field">
+              <input name="address" placeholder="Address" class="input-field">
+            </div>
+            <button type="submit" class="btn-success"><i class="fas fa-user-plus"></i> Create User</button>
+          </form>
+        </div>
+      </div>
+
+    </div><!-- end content-area -->
+  </div><!-- end main-area -->
+</div><!-- end flex -->
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module" src="../assets/js/admin/admin.js"></script>
+<script>
+  // ----- switchTab (আপডেট) -----
+  window.switchTab = function(tabId) {
+    // সব ট্যাব কন্টেন্ট লুকান
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    // ক্লিক করা ট্যাবটি দেখান
+    const target = document.getElementById(tabId);
+    if (target) target.classList.remove('hidden');
+
+    // সব সাইডবার লিংক থেকে active ক্লাস সরান
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.classList.remove('active');
+    });
+
+    // ক্লিক করা লিংকে active ক্লাস যোগ করুন
+    const activeLink = document.querySelector(`.sidebar-link[data-tab="${tabId}"]`);
+    if (activeLink) {
+      activeLink.classList.add('active');
+    }
+
+    // পেজ টাইটেল আপডেট করুন
+    const titles = {
+      tabReports: 'Dashboard',
+      tabDoctors: 'Manage Doctors',
+      tabStaff: 'Manage Lab Staff',
+      tabDepartments: 'Manage Departments',
+      tabPatients: 'Manage Patients',
+      tabUserManagement: 'User Management'
+    };
+    document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
+
+    // প্রয়োজনীয় ডেটা লোড করুন (admin.js থেকে)
+    if (tabId === 'tabReports') window.loadReports && window.loadReports();
+    else if (tabId === 'tabDoctors') window.loadDoctors && window.loadDoctors();
+    else if (tabId === 'tabStaff') window.loadStaff && window.loadStaff();
+    else if (tabId === 'tabDepartments') window.loadDepartments && window.loadDepartments();
+    else if (tabId === 'tabPatients') window.loadPatients && window.loadPatients();
+  };
+
+  // ----- logout -----
+  window.logout = function() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '../public/index.html';
+  };
+
+  // ----- on load -----
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (user) {
+      const initial = user.name ? user.name.charAt(0).toUpperCase() : 'A';
+      document.getElementById('userInitial').textContent = initial;
+      document.getElementById('userName').textContent = user.name || 'Admin';
+      document.getElementById('userNameTop').textContent = user.name || 'Admin';
+    }
+    // ডিফল্ট ট্যাব: Dashboard
+    switchTab('tabReports');
+  });
+</script>
+</body>
+</html>

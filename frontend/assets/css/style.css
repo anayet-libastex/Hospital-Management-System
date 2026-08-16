@@ -1,0 +1,39 @@
+/* style.css */
+.error-msg {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.hidden-form {
+  display: none;
+}
+
+.form-container {
+  transition: all 0.3s ease;
+}
+
+/* Slight hover effects */
+button:hover {
+  transform: scale(1.02);
+}
+
+/* Scrollable tables */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Loader (if needed) */
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Dashboard – HMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <nav class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-user-injured text-blue-600 text-2xl"></i>
+        <span class="text-xl font-semibold text-gray-800">HMS – Patient</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span id="userName" class="text-sm text-gray-600"></span>
+        <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-3 py-1 rounded transition">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow container mx-auto px-4 py-6">
+    <div id="errorMsg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative hidden mb-4"></div>
+
+    <div class="flex flex-wrap border-b border-gray-200 mb-6">
+      <button onclick="switchTab('tabBooking')" class="tab-btn py-2 px-4 font-medium text-blue-600 border-b-2 border-blue-600">Book Appointment</button>
+      <button onclick="switchTab('tabAppointments')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">My Appointments</button>
+      <button onclick="switchTab('tabPrescriptions')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Prescriptions</button>
+      <button onclick="switchTab('tabHistory')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Medical History</button>
+      <button onclick="switchTab('tabPayment')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Payment</button>
+      <button onclick="switchTab('tabReports')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Download Reports</button>
+    </div>
+
+    <!-- Book Appointment -->
+    <div id="tabBooking" class="tab-content">
+      <h2 class="text-2xl font-bold mb-4">Book an Appointment</h2>
+      <form id="bookAppointmentForm" class="bg-white p-4 rounded shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <select id="bookingDepartment" name="departmentId" required class="border rounded px-3 py-2">
+            <option value="">Select Department</option>
+          </select>
+          <select id="bookingDoctor" name="doctorId" required class="border rounded px-3 py-2">
+            <option value="">Select Doctor</option>
+          </select>
+          <input type="date" name="date" required class="border rounded px-3 py-2">
+          <input type="time" name="time" required class="border rounded px-3 py-2">
+          <input name="notes" placeholder="Notes" class="border rounded px-3 py-2 col-span-2">
+        </div>
+        <button type="submit" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Book</button>
+      </form>
+    </div>
+
+    <!-- Appointments -->
+    <div id="tabAppointments" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
+      <div id="appointmentList"></div>
+    </div>
+
+    <!-- Prescriptions -->
+    <div id="tabPrescriptions" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">My Prescriptions</h2>
+      <div id="prescriptionList"></div>
+    </div>
+
+    <!-- Medical History -->
+    <div id="tabHistory" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">Medical History</h2>
+      <div id="historyList"></div>
+    </div>
+
+    <!-- Payment -->
+    <div id="tabPayment" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">Make Payment</h2>
+      <form id="paymentForm" class="bg-white p-4 rounded shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="appointmentId" placeholder="Appointment ID" required class="border rounded px-3 py-2">
+          <input name="amount" type="number" placeholder="Amount" required class="border rounded px-3 py-2">
+          <select name="method" required class="border rounded px-3 py-2">
+            <option value="">Payment Method</option>
+            <option value="bkash">Bkash</option>
+            <option value="rocket">Rocket</option>
+            <option value="nogod">Nagod</option>
+          </select>
+        </div>
+        <button type="submit" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Pay Now</button>
+      </form>
+    </div>
+
+    <!-- Download Reports -->
+    <div id="tabReports" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">Download Reports</h2>
+      <p class="text-gray-600">Enter Lab Request ID to view/download report:</p>
+      <div class="mt-2 flex">
+        <input id="reportIdInput" placeholder="Lab Request ID" class="border rounded px-3 py-2 flex-1">
+        <button onclick="downloadReport(document.getElementById('reportIdInput').value)" class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">View Report</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../assets/js/patient/patient.js"></script>
+  <script>
+    window.logout = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '../public/index.html';
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Dashboard – HMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <nav class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-user-md text-blue-600 text-2xl"></i>
+        <span class="text-xl font-semibold text-gray-800">HMS – Doctor</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span id="userName" class="text-sm text-gray-600"></span>
+        <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-3 py-1 rounded transition">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow container mx-auto px-4 py-6">
+    <div id="errorMsg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative hidden mb-4"></div>
+
+    <div class="flex flex-wrap border-b border-gray-200 mb-6">
+      <button onclick="switchTab('tabAppointments')" class="tab-btn py-2 px-4 font-medium text-blue-600 border-b-2 border-blue-600">Appointments</button>
+      <button onclick="switchTab('tabPrescription')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Prescription</button>
+      <button onclick="switchTab('tabLabRequests')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Lab Requests</button>
+    </div>
+
+    <!-- Appointments -->
+    <div id="tabAppointments" class="tab-content">
+      <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
+      <div id="appointmentList"></div>
+    </div>
+
+    <!-- Prescription -->
+    <div id="tabPrescription" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">Create Prescription</h2>
+      <form id="createPrescriptionForm" class="bg-white p-4 rounded shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="appointmentId" placeholder="Appointment ID" required class="border rounded px-3 py-2">
+          <input name="patientId" placeholder="Patient ID" required class="border rounded px-3 py-2">
+          <input name="diagnosis" placeholder="Diagnosis" required class="border rounded px-3 py-2">
+          <textarea name="medicines" placeholder="Medicines (JSON array: [{'name':'...','dosage':'...'}] )" class="border rounded px-3 py-2 col-span-2"></textarea>
+        </div>
+        <button type="submit" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Create Prescription</button>
+      </form>
+    </div>
+
+    <!-- Lab Requests -->
+    <div id="tabLabRequests" class="tab-content hidden">
+      <h2 class="text-2xl font-bold mb-4">Lab Test Requests</h2>
+      <form id="createLabRequestForm" class="bg-white p-4 rounded shadow mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="patientId" placeholder="Patient ID" required class="border rounded px-3 py-2">
+          <input name="testType" placeholder="Test Type" required class="border rounded px-3 py-2">
+          <input name="notes" placeholder="Notes" class="border rounded px-3 py-2">
+        </div>
+        <button type="submit" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Request Lab Test</button>
+      </form>
+      <div id="labRequestList"></div>
+    </div>
+  </main>
+
+  <script type="module" src="../assets/js/doctor/doctor.js"></script>
+  <script>
+    window.logout = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '../public/index.html';
+    };
+  </script>
+</body>
+</html>
