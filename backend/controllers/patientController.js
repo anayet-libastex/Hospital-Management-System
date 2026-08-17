@@ -9,14 +9,15 @@ import LabTestRequest from '../models/LabTestRequest.js';
 // @route   POST /api/patient/appointments
 export const bookAppointment = async (req, res) => {
   try {
-    const { doctorId, departmentId, date, time, notes } = req.body;
+    // ✅ reason ও appointmentType যোগ
+    const { doctorId, departmentId, date, time, notes, reason, appointmentType } = req.body;
     const patientId = req.user.id;
 
     // Check if doctor exists
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) return res.status(404).json({ msg: 'Doctor not found' });
 
-    // Check for duplicate booking (same patient, same doctor, same date/time)
+    // Check for duplicate booking
     const existing = await Appointment.findOne({ patientId, doctorId, date, time, status: { $ne: 'cancelled' } });
     if (existing) return res.status(400).json({ msg: 'Appointment already booked at this slot' });
 
@@ -27,6 +28,8 @@ export const bookAppointment = async (req, res) => {
       date,
       time,
       notes,
+      reason,           // ✅ নতুন
+      appointmentType,  // ✅ নতুন
       status: 'pending',
     });
     await appointment.save();
@@ -72,8 +75,35 @@ export const cancelAppointment = async (req, res) => {
   }
 };
 
-// @desc    View prescriptions for logged-in patient
-// @route   GET /api/patient/prescriptions
+// ✅ আপডেটেড – updateAppointment-এ নতুন ফিল্ড যুক্ত
+export const updateAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // ✅ reason ও appointmentType যোগ
+    const { departmentId, doctorId, date, time, notes, reason, appointmentType } = req.body;
+    
+    const appointment = await Appointment.findOneAndUpdate(
+      { _id: id, patientId: req.user.id, status: 'pending' },
+      { 
+        departmentId, 
+        doctorId, 
+        date, 
+        time, 
+        notes, 
+        reason,        // ✅ নতুন
+        appointmentType // ✅ নতুন
+      },
+      { new: true }
+    );
+    if (!appointment) return res.status(404).json({ msg: 'Appointment not found or not editable' });
+    res.json(appointment);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+// GET /api/patient/prescriptions
 export const getPrescriptions = async (req, res) => {
   try {
     const patientId = req.user.id;
@@ -87,8 +117,7 @@ export const getPrescriptions = async (req, res) => {
   }
 };
 
-// @desc    View own medical history
-// @route   GET /api/patient/medical-history
+// GET /api/patient/medical-history
 export const getMedicalHistory = async (req, res) => {
   try {
     const patientId = req.user.id;
@@ -103,28 +132,24 @@ export const getMedicalHistory = async (req, res) => {
   }
 };
 
-// @desc    Initiate online payment (Bkash/Rocket/Nagod)
-// @route   POST /api/patient/payments
+// POST /api/patient/payments
 export const createPayment = async (req, res) => {
   try {
     const { appointmentId, amount, method } = req.body;
     const patientId = req.user.id;
 
-    // Validate payment method
     if (!['bkash', 'rocket', 'nogod'].includes(method)) {
       return res.status(400).json({ msg: 'Invalid payment method' });
     }
 
-    // Generate a dummy transaction ID (in real app, integrate with gateway)
     const transactionId = `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
-
     const payment = new Payment({
       patientId,
       appointmentId,
       amount,
       method,
       transactionId,
-      status: 'completed', // simulate success
+      status: 'completed',
     });
     await payment.save();
 
@@ -135,8 +160,7 @@ export const createPayment = async (req, res) => {
   }
 };
 
-// @desc    Check payment status
-// @route   GET /api/patient/payments/:id
+// GET /api/patient/payments/:id
 export const getPaymentStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -149,17 +173,12 @@ export const getPaymentStatus = async (req, res) => {
   }
 };
 
-// @desc    Download report (lab report, etc.)
-// @route   GET /api/patient/reports/download/:id
+// GET /api/patient/reports/download/:id
 export const downloadReport = async (req, res) => {
   try {
     const { id } = req.params;
-    // For simplicity, we fetch a lab test request and return its result as a file link
     const request = await LabTestRequest.findOne({ _id: id, patientId: req.user.id });
     if (!request) return res.status(404).json({ msg: 'Report not found' });
-
-    // In real scenario, you'd serve a file from storage.
-    // Here we just return the result text as a JSON.
     res.json({ report: request.result, reportDate: request.reportDate });
   } catch (err) {
     console.error(err.message);

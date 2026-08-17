@@ -7,74 +7,388 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* ---------- SIDEBAR ---------- */
+    .sidebar {
+      background: #1e293b;
+      color: #e2e8f0;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar-brand {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      height: 72px;
+    }
+    .sidebar-brand i {
+      font-size: 1.75rem;
+      color: #60a5fa;
+    }
+    .sidebar-brand span {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+    }
+    .sidebar-user {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sidebar-user .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      background: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .sidebar-user .user-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: white;
+    }
+    .sidebar-user .user-role {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .sidebar-nav {
+      flex: 1;
+      padding: 1rem 0.75rem;
+      overflow-y: auto;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      border-radius: 0.5rem;
+      color: #cbd5e1;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .sidebar-link:hover {
+      background: #334155;
+      color: #f1f5f9;
+    }
+    .sidebar-link.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .sidebar-link i {
+      width: 1.5rem;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .sidebar-footer {
+      border-top: 1px solid #334155;
+      padding: 1rem 1.5rem;
+    }
+    .sidebar-footer button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 0.5rem;
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-footer button:hover {
+      background: #334155;
+      color: white;
+    }
+
+    /* ---------- MAIN CONTENT ---------- */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f1f5f9;
+    }
+    .top-bar {
+      background: white;
+      padding: 1rem 1.5rem;
+      height: 72px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .top-bar h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .top-bar .welcome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .top-bar .welcome span:first-child {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    .top-bar .welcome span:last-child {
+      color: #1e293b;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .content-area {
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    /* ---------- UTILITY ---------- */
+    .tab-content {
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hidden-tab {
+      display: none;
+    }
+    .input-field {
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      width: 100%;
+      outline: none;
+      transition: 0.2s;
+    }
+    .input-field:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-success {
+      background: #16a34a;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-success:hover { background: #15803d; }
+    .error-msg {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      display: none;
+      margin-bottom: 1rem;
+    }
+    .error-msg.show { display: block; }
+    .list-item {
+      background: white;
+      padding: 1rem 1.25rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid #2563eb;
+    }
+
+    /* Scrollbar */
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #475569; border-radius: 8px; }
+  </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-  <nav class="bg-white shadow-md">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-user-md text-blue-600 text-2xl"></i>
-        <span class="text-xl font-semibold text-gray-800">HMS – Doctor</span>
+<body>
+
+<div class="flex">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <i class="fas fa-user-md"></i>
+      <span>HMS Doctor</span>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="avatar" id="userInitial">D</div>
+      <div>
+        <div class="user-name" id="userName">Doctor</div>
+        <div class="user-role">Physician</div>
       </div>
-      <div class="flex items-center space-x-4">
-        <span id="userName" class="text-sm text-gray-600"></span>
-        <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-3 py-1 rounded transition">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" onclick="switchTab('tabAppointments')" class="sidebar-link active" data-tab="tabAppointments">
+        <i class="fas fa-calendar-check"></i> Appointments
+      </a>
+      <a href="#" onclick="switchTab('tabPrescription')" class="sidebar-link" data-tab="tabPrescription">
+        <i class="fas fa-prescription"></i> Prescription
+      </a>
+      <a href="#" onclick="switchTab('tabLabRequests')" class="sidebar-link" data-tab="tabLabRequests">
+        <i class="fas fa-flask"></i> Lab Requests
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main-area">
+
+    <header class="top-bar">
+      <h1 id="pageTitle">Appointments</h1>
+      <div class="welcome">
+        <span>Welcome back,</span>
+        <span id="userNameTop">Doctor</span>
       </div>
-    </div>
-  </nav>
+    </header>
 
-  <main class="flex-grow container mx-auto px-4 py-6">
-    <div id="errorMsg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative hidden mb-4"></div>
+    <div class="content-area">
 
-    <div class="flex flex-wrap border-b border-gray-200 mb-6">
-      <button onclick="switchTab('tabAppointments')" class="tab-btn py-2 px-4 font-medium text-blue-600 border-b-2 border-blue-600">Appointments</button>
-      <button onclick="switchTab('tabPrescription')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Prescription</button>
-      <button onclick="switchTab('tabLabRequests')" class="tab-btn py-2 px-4 font-medium text-gray-500 hover:text-gray-700">Lab Requests</button>
-    </div>
+      <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
 
-    <!-- Appointments -->
-    <div id="tabAppointments" class="tab-content">
-      <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
-      <div id="appointmentList"></div>
-    </div>
+      <!-- ===== TAB: Appointments ===== -->
+      <div id="tabAppointments" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
+        <div id="appointmentList"></div>
+      </div>
 
-    <!-- Prescription -->
-    <div id="tabPrescription" class="tab-content hidden">
-      <h2 class="text-2xl font-bold mb-4">Create Prescription</h2>
-      <form id="createPrescriptionForm" class="bg-white p-4 rounded shadow">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input name="appointmentId" placeholder="Appointment ID" required class="border rounded px-3 py-2">
-          <input name="patientId" placeholder="Patient ID" required class="border rounded px-3 py-2">
-          <input name="diagnosis" placeholder="Diagnosis" required class="border rounded px-3 py-2">
-          <textarea name="medicines" placeholder="Medicines (JSON array: [{'name':'...','dosage':'...'}] )" class="border rounded px-3 py-2 col-span-2"></textarea>
-        </div>
-        <button type="submit" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Create Prescription</button>
-      </form>
-    </div>
+      <!-- ===== TAB: Prescription ===== -->
+      <div id="tabPrescription" class="tab-content hidden-tab">
+        <h2 class="text-2xl font-bold mb-4">Create Prescription</h2>
+        <form id="createPrescriptionForm" class="bg-white p-4 rounded shadow">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input name="appointmentId" placeholder="Appointment ID" required class="input-field">
+            <input name="patientId" placeholder="Patient ID" required class="input-field">
+            <input name="diagnosis" placeholder="Diagnosis" required class="input-field">
+            <textarea name="medicines" placeholder='Medicines (JSON array: [{"name":"...","dosage":"..."}])' class="input-field col-span-2" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn-primary mt-3"><i class="fas fa-plus"></i> Create Prescription</button>
+        </form>
+      </div>
 
-    <!-- Lab Requests -->
-    <div id="tabLabRequests" class="tab-content hidden">
-      <h2 class="text-2xl font-bold mb-4">Lab Test Requests</h2>
-      <form id="createLabRequestForm" class="bg-white p-4 rounded shadow mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input name="patientId" placeholder="Patient ID" required class="border rounded px-3 py-2">
-          <input name="testType" placeholder="Test Type" required class="border rounded px-3 py-2">
-          <input name="notes" placeholder="Notes" class="border rounded px-3 py-2">
-        </div>
-        <button type="submit" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Request Lab Test</button>
-      </form>
-      <div id="labRequestList"></div>
-    </div>
-  </main>
+      <!-- ===== TAB: Lab Requests ===== -->
+      <div id="tabLabRequests" class="tab-content hidden-tab">
+        <h2 class="text-2xl font-bold mb-4">Lab Test Requests</h2>
+        <form id="createLabRequestForm" class="bg-white p-4 rounded shadow mb-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input name="patientId" placeholder="Patient ID" required class="input-field">
+            <input name="testType" placeholder="Test Type" required class="input-field">
+            <input name="notes" placeholder="Notes" class="input-field col-span-2">
+          </div>
+          <button type="submit" class="btn-success mt-3"><i class="fas fa-flask"></i> Request Lab Test</button>
+        </form>
+        <div id="labRequestList"></div>
+      </div>
 
-  <script type="module" src="../assets/js/doctor/doctor.js"></script>
-  <script>
-    window.logout = function() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '../public/index.html';
+    </div><!-- end content-area -->
+  </div><!-- end main-area -->
+</div><!-- end flex -->
+
+<script type="module" src="../assets/js/doctor/doctor.js"></script>
+<script>
+  // Override switchTab to handle sidebar active state and page title
+  window.switchTab = function(tabId) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden-tab'));
+    // Show selected tab
+    const target = document.getElementById(tabId);
+    if (target) target.classList.remove('hidden-tab');
+
+    // Update sidebar active link
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.classList.remove('active');
+      if (link.dataset.tab === tabId) {
+        link.classList.add('active');
+      }
+    });
+
+    // Update page title
+    const titles = {
+      tabAppointments: 'Appointments',
+      tabPrescription: 'Prescription',
+      tabLabRequests: 'Lab Requests'
     };
-  </script>
+    document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
+
+    // Load respective data (functions from doctor.js)
+    if (tabId === 'tabAppointments') {
+      if (typeof loadAppointments === 'function') loadAppointments();
+    } else if (tabId === 'tabLabRequests') {
+      if (typeof loadLabRequests === 'function') loadLabRequests();
+    }
+    // Prescription tab doesn't need auto-load
+  };
+
+  // Logout function
+  window.logout = function() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '../public/index.html';
+  };
+
+  // On load, set user name and default tab (Appointments)
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (user) {
+      const initial = user.name ? user.name.charAt(0).toUpperCase() : 'D';
+      document.getElementById('userInitial').textContent = initial;
+      document.getElementById('userName').textContent = user.name || 'Doctor';
+      document.getElementById('userNameTop').textContent = user.name || 'Doctor';
+    }
+    // Default tab: Appointments
+    switchTab('tabAppointments');
+  });
+</script>
 </body>
 </html>

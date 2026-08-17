@@ -1,15 +1,17 @@
 import mongoose from 'mongoose';
+import './Doctor.js';   // Doctor ডিসক্রিমিনেটর রেজিস্টার
+import './Patient.js';  // Patient ডিসক্রিমিনেটর রেজিস্টার
 
 const appointmentSchema = new mongoose.Schema(
   {
     patientId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Patient',
+      ref: 'patient',
       required: true,
     },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Doctor',
+      ref: 'doctor',
       required: true,
     },
     departmentId: {
@@ -18,20 +20,28 @@ const appointmentSchema = new mongoose.Schema(
       required: true,
     },
     date: { type: Date, required: true },
-    time: { type: String, required: true }, // e.g. "10:30 AM"
+    time: { type: String, required: true },
     status: {
       type: String,
       enum: ['pending', 'confirmed', 'completed', 'cancelled'],
       default: 'pending',
+    },
+    // ✅ নতুন ফিল্ড – Reason for Visit (Mandatory)
+    reason: { 
+      type: String, 
+      trim: true,
+      required: true,
+    },
+    // ✅ নতুন ফিল্ড – Appointment Type (Optional)
+    appointmentType: {
+      type: String,
+      enum: ['general', 'followup', 'emergency', 'telemedicine'],
+      default: 'general',
     },
     notes: { type: String, trim: true },
   },
   { timestamps: true }
 );
 
-// Ensure a patient can't have duplicate active appointments (optional)
-appointmentSchema.index({ patientId: 1, date: 1, time: 1 }, { unique: true });
-
 const Appointment = mongoose.model('Appointment', appointmentSchema);
-
 export default Appointment;

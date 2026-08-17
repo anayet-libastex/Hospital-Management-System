@@ -218,6 +218,20 @@
       gap: 0.5rem;
     }
     .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary {
+      background: #6b7280;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-secondary:hover { background: #4b5563; }
     .btn-success {
       background: #16a34a;
       color: white;
@@ -232,6 +246,32 @@
       gap: 0.5rem;
     }
     .btn-success:hover { background: #15803d; }
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.4rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.4rem;
+      font-weight: 500;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .btn-warning:hover { background: #d97706; }
     .list-item {
       background: white;
       padding: 1rem 1.25rem;
@@ -257,6 +297,75 @@
     /* Scrollbar */
     .sidebar::-webkit-scrollbar { width: 4px; }
     .sidebar::-webkit-scrollbar-thumb { background: #475569; border-radius: 8px; }
+
+    /* Department table */
+    .dept-table {
+      width: 100%;
+      background: white;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .dept-table th {
+      background: #f8fafc;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: #475569;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dept-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    .dept-table tr:last-child td {
+      border-bottom: none;
+    }
+    /* Action column – keep buttons horizontal */
+    .dept-table .action-cell {
+      white-space: nowrap;
+      text-align: right;
+    }
+    .dept-table .action-cell .btn-warning,
+    .dept-table .action-cell .btn-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin: 0 0.15rem;
+    }
+
+    /* Modal overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-box {
+      background: white;
+      border-radius: 0.75rem;
+      max-width: 700px;
+      width: 90%;
+      padding: 1.5rem;
+      transform: scale(0.95);
+      transition: transform 0.2s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-overlay.active .modal-box {
+      transform: scale(1);
+    }
   </style>
 </head>
 <body>
@@ -265,13 +374,11 @@
 
   <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar">
-    <!-- Brand -->
     <div class="sidebar-brand">
       <i class="fas fa-hospital"></i>
       <span>HMS Admin</span>
     </div>
 
-    <!-- User -->
     <div class="sidebar-user">
       <div class="avatar" id="userInitial">A</div>
       <div>
@@ -280,7 +387,6 @@
       </div>
     </div>
 
-    <!-- Nav (✅ এখানে return false; যোগ করা হয়েছে) -->
     <nav class="sidebar-nav">
       <a href="#" onclick="switchTab('tabReports'); return false;" class="sidebar-link active" data-tab="tabReports">
         <i class="fas fa-chart-pie"></i> Dashboard
@@ -302,7 +408,6 @@
       </a>
     </nav>
 
-    <!-- Footer -->
     <div class="sidebar-footer">
       <button onclick="logout()">
         <i class="fas fa-sign-out-alt"></i> Logout
@@ -313,7 +418,6 @@
   <!-- ===== MAIN ===== -->
   <div class="main-area">
 
-    <!-- Top Bar -->
     <header class="top-bar">
       <h1 id="pageTitle">Dashboard</h1>
       <div class="welcome">
@@ -322,7 +426,6 @@
       </div>
     </header>
 
-    <!-- Content -->
     <div class="content-area">
 
       <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
@@ -353,10 +456,26 @@
               <input name="email" type="email" placeholder="Email" required class="input-field">
               <input name="password" type="password" placeholder="Password" required class="input-field">
               <input name="specialization" placeholder="Specialization" required class="input-field">
-              <input name="departmentId" placeholder="Department ID" required class="input-field">
+              <select name="departmentId" required class="input-field" id="doctorDeptSelect">
+                <option value="">Select Department</option>
+              </select>
               <input name="qualification" placeholder="Qualification" class="input-field">
               <input name="phone" placeholder="Phone" class="input-field">
               <input name="address" placeholder="Address" class="input-field">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Work Days (e.g., Mon,Wed,Fri)</label>
+                <input type="text" name="scheduleDays" placeholder="e.g. Monday,Wednesday,Friday" class="input-field w-full">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Start Time (24-hour)</label>
+                <input type="time" name="scheduleStartTime" class="input-field w-full">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">End Time (24-hour)</label>
+                <input type="time" name="scheduleEndTime" class="input-field w-full">
+              </div>
             </div>
             <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Doctor</button>
           </form>
@@ -373,7 +492,9 @@
               <input name="name" placeholder="Full Name" required class="input-field">
               <input name="email" type="email" placeholder="Email" required class="input-field">
               <input name="password" type="password" placeholder="Password" required class="input-field">
-              <input name="departmentId" placeholder="Department ID" required class="input-field">
+              <select name="departmentId" required class="input-field" id="staffDeptSelect">
+                <option value="">Select Department</option>
+              </select>
               <input name="qualification" placeholder="Qualification" class="input-field">
               <input name="phone" placeholder="Phone" class="input-field">
               <input name="address" placeholder="Address" class="input-field">
@@ -390,14 +511,41 @@
         <div class="form-card">
           <form id="createDeptForm" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input name="name" placeholder="Department Name" required class="input-field">
-              <input name="description" placeholder="Description" class="input-field">
-              <input name="headDoctor" placeholder="Head Doctor ID" class="input-field">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Department Name <span class="text-red-500">*</span></label>
+                <input type="text" id="deptNameInput" name="name" placeholder="Enter department name" required class="input-field w-full">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
+                <input type="text" id="deptDescInput" name="description" placeholder="Enter description" class="input-field w-full">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Head Doctor (optional)</label>
+              <select id="deptHeadSelect" name="headDoctor" class="input-field w-full">
+                <option value="">Select Head Doctor</option>
+              </select>
             </div>
             <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Department</button>
           </form>
         </div>
-        <div id="deptList" class="space-y-3"></div>
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <table class="dept-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Department Name</th>
+                <th>Description</th>
+                <th>Head Doctor</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="deptTableBody"></tbody>
+          </table>
+          <div id="deptEmptyMessage" class="text-center py-8 text-gray-500">
+            No departments found. Add your first department above.
+          </div>
+        </div>
       </div>
 
       <!-- ===== TAB: Patients ===== -->
@@ -415,13 +563,16 @@
               <input name="name" placeholder="Full Name" required class="input-field">
               <input name="email" type="email" placeholder="Email" required class="input-field">
               <input name="password" type="password" placeholder="Password" required class="input-field">
-              <select name="role" required class="input-field">
+              <select name="role" required class="input-field" id="userRoleSelect">
                 <option value="">Select Role</option>
                 <option value="doctor">Doctor</option>
                 <option value="labstaff">Lab Staff</option>
+                <option value="depthead">Department Head</option>
               </select>
-              <input name="specialization" placeholder="Specialization (doctor)" class="input-field">
-              <input name="departmentId" placeholder="Department ID" required class="input-field">
+              <input name="specialization" placeholder="Specialization (doctor)" class="input-field" id="userSpecialization">
+              <select name="departmentId" class="input-field" id="userDeptSelect">
+                <option value="">Select Department (optional)</option>
+              </select>
               <input name="qualification" placeholder="Qualification" class="input-field">
               <input name="phone" placeholder="Phone" class="input-field">
               <input name="address" placeholder="Address" class="input-field">
@@ -429,35 +580,254 @@
             <button type="submit" class="btn-success"><i class="fas fa-user-plus"></i> Create User</button>
           </form>
         </div>
+
+        <!-- ✅ সার্চ ফিচার -->
+        <div class="flex items-center gap-2 mt-8 mb-4">
+          <input type="text" id="searchUserInput" placeholder="Search by name, email, or role..." class="input-field flex-1">
+          <button id="searchUserBtn" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+          <button id="clearSearchBtn" class="btn-secondary">Clear</button>
+        </div>
+
+        <h3 class="text-xl font-bold mb-4 text-gray-800">Existing Users</h3>
+        <div id="userList" class="space-y-3"></div>
       </div>
 
     </div><!-- end content-area -->
   </div><!-- end main-area -->
 </div><!-- end flex -->
 
+<!-- ===== EDIT DEPARTMENT MODAL ===== -->
+<div id="editDeptModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Edit Department</h3>
+      <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <form id="editDeptForm">
+      <input type="hidden" id="editDeptId" />
+      <div class="mb-3">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Department Name <span class="text-red-500">*</span></label>
+        <input type="text" id="editDeptName" required class="input-field w-full">
+      </div>
+      <div class="mb-3">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+        <textarea id="editDeptDesc" rows="2" class="input-field w-full"></textarea>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Head Doctor (optional)</label>
+        <select id="editDeptHead" class="input-field w-full">
+          <option value="">Select Head Doctor</option>
+        </select>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Department</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== EDIT DOCTOR MODAL ===== -->
+<div id="editDoctorModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Edit Doctor</h3>
+      <button onclick="closeEditDoctorModal()" class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <form id="editDoctorForm">
+      <input type="hidden" id="editDoctorId" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="editDoctorName" required class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" id="editDoctorEmail" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Specialization <span class="text-red-500">*</span></label>
+          <input type="text" id="editDoctorSpecialization" required class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Department <span class="text-red-500">*</span></label>
+          <select id="editDoctorDepartment" required class="input-field w-full">
+            <option value="">Select Department</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Qualification</label>
+          <input type="text" id="editDoctorQualification" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+          <input type="text" id="editDoctorPhone" class="input-field w-full">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <input type="text" id="editDoctorAddress" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Work Days (e.g., Mon,Wed,Fri)</label>
+          <input type="text" id="editDoctorScheduleDays" placeholder="e.g. Monday,Wednesday,Friday" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Start Time (24-hour)</label>
+          <input type="time" id="editDoctorScheduleStart" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">End Time (24-hour)</label>
+          <input type="time" id="editDoctorScheduleEnd" class="input-field w-full">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" onclick="closeEditDoctorModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Doctor</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== EDIT STAFF MODAL ===== -->
+<div id="editStaffModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Edit Lab Staff</h3>
+      <button onclick="closeEditStaffModal()" class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <form id="editStaffForm">
+      <input type="hidden" id="editStaffId" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="editStaffName" required class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" id="editStaffEmail" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Department <span class="text-red-500">*</span></label>
+          <select id="editStaffDepartment" required class="input-field w-full">
+            <option value="">Select Department</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Qualification</label>
+          <input type="text" id="editStaffQualification" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+          <input type="text" id="editStaffPhone" class="input-field w-full">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <input type="text" id="editStaffAddress" class="input-field w-full">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" onclick="closeEditStaffModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Staff</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== EDIT USER MODAL (Role Enabled) ===== -->
+<div id="editUserModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Edit User</h3>
+      <button onclick="closeEditUserModal()" class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <form id="editUserForm">
+      <input type="hidden" id="editUserId" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="editUserName" required class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" id="editUserEmail" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+          <input type="text" id="editUserPhone" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <input type="text" id="editUserAddress" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Role <span class="text-red-500">*</span></label>
+          <!-- ✅ Role select now enabled (removed disabled attribute) -->
+          <select id="editUserRole" required class="input-field w-full">
+            <option value="doctor">Doctor</option>
+            <option value="labstaff">Lab Staff</option>
+            <option value="depthead">Department Head</option>
+          </select>
+          <!-- Note removed -->
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Department <span class="text-red-500">*</span></label>
+          <select id="editUserDepartment" required class="input-field w-full">
+            <option value="">Select Department</option>
+          </select>
+        </div>
+        <div id="editUserSpecializationGroup" class="hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
+          <input type="text" id="editUserSpecialization" class="input-field w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Qualification</label>
+          <input type="text" id="editUserQualification" class="input-field w-full">
+        </div>
+        <div id="editUserScheduleGroup" class="hidden md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Work Days</label>
+            <input type="text" id="editUserScheduleDays" placeholder="e.g. Monday,Wednesday" class="input-field w-full">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+            <input type="time" id="editUserScheduleStart" class="input-field w-full">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+            <input type="time" id="editUserScheduleEnd" class="input-field w-full">
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" onclick="closeEditUserModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update User</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- ===== SCRIPTS ===== -->
 <script type="module" src="../assets/js/admin/admin.js"></script>
 <script>
-  // ----- switchTab (আপডেট) -----
   window.switchTab = function(tabId) {
-    // সব ট্যাব কন্টেন্ট লুকান
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-    // ক্লিক করা ট্যাবটি দেখান
     const target = document.getElementById(tabId);
     if (target) target.classList.remove('hidden');
 
-    // সব সাইডবার লিংক থেকে active ক্লাস সরান
     document.querySelectorAll('.sidebar-link').forEach(link => {
       link.classList.remove('active');
     });
-
-    // ক্লিক করা লিংকে active ক্লাস যোগ করুন
     const activeLink = document.querySelector(`.sidebar-link[data-tab="${tabId}"]`);
-    if (activeLink) {
-      activeLink.classList.add('active');
-    }
+    if (activeLink) activeLink.classList.add('active');
 
-    // পেজ টাইটেল আপডেট করুন
     const titles = {
       tabReports: 'Dashboard',
       tabDoctors: 'Manage Doctors',
@@ -468,22 +838,54 @@
     };
     document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
 
-    // প্রয়োজনীয় ডেটা লোড করুন (admin.js থেকে)
     if (tabId === 'tabReports') window.loadReports && window.loadReports();
-    else if (tabId === 'tabDoctors') window.loadDoctors && window.loadDoctors();
-    else if (tabId === 'tabStaff') window.loadStaff && window.loadStaff();
-    else if (tabId === 'tabDepartments') window.loadDepartments && window.loadDepartments();
+    else if (tabId === 'tabDoctors') {
+      window.loadDepartmentDropdowns && window.loadDepartmentDropdowns();
+      window.loadDoctors && window.loadDoctors();
+    }
+    else if (tabId === 'tabStaff') {
+      window.loadDepartmentDropdowns && window.loadDepartmentDropdowns();
+      window.loadStaff && window.loadStaff();
+    }
+    else if (tabId === 'tabDepartments') {
+      window.loadDeptHeadDropdown && window.loadDeptHeadDropdown();
+      window.loadDepartments && window.loadDepartments();
+    }
     else if (tabId === 'tabPatients') window.loadPatients && window.loadPatients();
+    else if (tabId === 'tabUserManagement') {
+      window.loadDepartmentDropdowns && window.loadDepartmentDropdowns();
+      window.loadUsers && window.loadUsers();   // ইউজার লিস্ট লোড
+      document.getElementById('userRoleSelect')?.addEventListener('change', function() {
+        const deptField = document.getElementById('userDeptSelect');
+        if (this.value === 'depthead') {
+          deptField.required = true;
+        } else {
+          deptField.required = false;
+        }
+      });
+    }
   };
 
-  // ----- logout -----
   window.logout = function() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     window.location.href = '../public/index.html';
   };
 
-  // ----- on load -----
+  // মডাল বন্ধ করার ফাংশন
+  window.closeEditModal = function() {
+    document.getElementById('editDeptModal').classList.remove('active');
+  };
+  window.closeEditDoctorModal = function() {
+    document.getElementById('editDoctorModal').classList.remove('active');
+  };
+  window.closeEditStaffModal = function() {
+    document.getElementById('editStaffModal').classList.remove('active');
+  };
+  window.closeEditUserModal = function() {
+    document.getElementById('editUserModal').classList.remove('active');
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (user) {
@@ -492,7 +894,6 @@
       document.getElementById('userName').textContent = user.name || 'Admin';
       document.getElementById('userNameTop').textContent = user.name || 'Admin';
     }
-    // ডিফল্ট ট্যাব: Dashboard
     switchTab('tabReports');
   });
 </script>

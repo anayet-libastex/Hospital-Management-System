@@ -11,37 +11,34 @@ export const registerPatient = async (req, res) => {
     const { name, email, password, phone, address, dateOfBirth, bloodGroup, emergencyContact } = req.body;
 
     // Check if user already exists
-    let user = await User.findOne({ email });
-    if (user) {
+    let existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res.status(400).json({ msg: 'User already exists' });
     }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create base user
-    user = new User({
+    // ✅ সরাসরি Patient ডিসক্রিমিনেটর মডেল ব্যবহার করুন (সব ফিল্ড একসঙ্গে)
+    const patient = new Patient({
+      // বেস ইউজার ফিল্ড
       name,
       email,
       password: hashedPassword,
-      role: 'patient',
+      role: 'patient', // এই role অনুযায়ী ডিসক্রিমিনেটর চিহ্নিত হবে
       phone,
       address,
-    });
-    await user.save();
-
-    // Create patient profile
-    const patient = new Patient({
-      _id: user._id,
+      // ডিসক্রিমিনেটর ফিল্ড
       dateOfBirth,
       bloodGroup,
       emergencyContact,
     });
+
     await patient.save();
 
     // Generate JWT
     const token = jwt.sign(
-      { id: user._id, role: user.role, email: user.email },
+      { id: patient._id, role: patient.role, email: patient.email },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -49,15 +46,25 @@ export const registerPatient = async (req, res) => {
     res.status(201).json({
       token,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        id: patient._id,
+        name: patient.name,
+        email: patient.email,
+        role: patient.role,
       },
     });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Server error' });
+    console.error('❌ Registration error:', err.message);
+    // Mongoose validation error হলে ক্লিন মেসেজ পাঠান
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({ msg: errors.join(', ') });
+    }
+    // ডুপ্লিকেট কী এরর (unique index) হ্যান্ডেল
+    if (err.code === 11000) {
+      const field = Object.keys(err.keyPattern)[0];
+      return res.status(400).json({ msg: `${field} already exists.` });
+    }
+    res.status(500).json({ msg: 'Server error: ' + err.message });
   }
 };
 

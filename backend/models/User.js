@@ -1,13 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    password: { type: String, required: true}, // not returned by default
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: { type: String, required: true }, // not returned by default
     role: {
       type: String,
-      enum: ['admin', 'doctor', 'labstaff', 'patient'],
+      enum: ["admin", "doctor", "labstaff", "patient", "depthead"], 
       required: true,
     },
     phone: { type: String, trim: true },
@@ -16,13 +22,13 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    discriminatorKey: 'role', // key used to distinguish child models
-  }
+    discriminatorKey: "role", // key used to distinguish child models
+  },
 );
 
 // Index for faster lookup
 // userSchema.index({ email: 1 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

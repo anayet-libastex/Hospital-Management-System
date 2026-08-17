@@ -2,24 +2,31 @@ import Appointment from '../models/Appointment.js';
 import Prescription from '../models/Prescription.js';
 import MedicalHistory from '../models/MedicalHistory.js';
 import LabTestRequest from '../models/LabTestRequest.js';
+import Doctor from '../models/Doctor.js';
 
 // @desc    Get all appointments assigned to this doctor
 // @route   GET /api/doctor/appointments
 export const getAppointments = async (req, res) => {
   try {
     const doctorId = req.user.id;
+
+    console.log('🔵 Doctor ID from token:', doctorId);
+
     const appointments = await Appointment.find({ doctorId })
       .populate('patientId', 'name email phone')
-      .populate('departmentId', 'name');
+      .populate('departmentId', 'name')
+      .populate('doctorId', 'name specialization');
+
+    console.log('🟢 Appointments found:', appointments.length);
+
     res.json(appointments);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Server error' });
+    console.error('❌ Error in getAppointments:', err.message);
+    res.status(500).json({ msg: 'Server error: ' + err.message });
   }
 };
 
-// @desc    Update appointment status
-// @route   PUT /api/doctor/appointments/:id/status
+// ----- অন্যান্য ফাংশন (updateStatus, createPrescription, ইত্যাদি) -----
 export const updateAppointmentStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -29,7 +36,6 @@ export const updateAppointmentStatus = async (req, res) => {
     }
     const appointment = await Appointment.findByIdAndUpdate(id, { status }, { new: true });
     if (!appointment) return res.status(404).json({ msg: 'Appointment not found' });
-    // Ensure this appointment belongs to the doctor
     if (appointment.doctorId.toString() !== req.user.id) {
       return res.status(403).json({ msg: 'Not authorized to update this appointment' });
     }
@@ -40,14 +46,11 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
-// @desc    Create prescription
-// @route   POST /api/doctor/prescriptions
 export const createPrescription = async (req, res) => {
   try {
     const { appointmentId, patientId, medicines, diagnosis } = req.body;
     const doctorId = req.user.id;
 
-    // Verify appointment belongs to this doctor
     const appointment = await Appointment.findOne({ _id: appointmentId, doctorId });
     if (!appointment) return res.status(404).json({ msg: 'Appointment not found or not yours' });
 
@@ -60,7 +63,6 @@ export const createPrescription = async (req, res) => {
     });
     await prescription.save();
 
-    // Update medical history (add record)
     let history = await MedicalHistory.findOne({ patientId });
     if (!history) {
       history = new MedicalHistory({ patientId, records: [] });
@@ -80,8 +82,6 @@ export const createPrescription = async (req, res) => {
   }
 };
 
-// @desc    Get patient medical history
-// @route   GET /api/doctor/patients/:id/medical-history
 export const getPatientMedicalHistory = async (req, res) => {
   try {
     const { id: patientId } = req.params;
@@ -96,8 +96,6 @@ export const getPatientMedicalHistory = async (req, res) => {
   }
 };
 
-// @desc    Request a lab test
-// @route   POST /api/doctor/lab-requests
 export const createLabRequest = async (req, res) => {
   try {
     const { patientId, testType, notes } = req.body;
@@ -119,8 +117,6 @@ export const createLabRequest = async (req, res) => {
   }
 };
 
-// @desc    View all lab requests made by this doctor
-// @route   GET /api/doctor/lab-requests
 export const getLabRequests = async (req, res) => {
   try {
     const doctorId = req.user.id;

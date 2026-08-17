@@ -1,6 +1,11 @@
+import './models/User.js';
+import './models/Doctor.js';   
+import './models/Patient.js';
+import './models/LabStaff.js';
+import './models/Department.js';
+import './models/Appointment.js';
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config({quiet: true});
 import express from "express";
 import connectDB from "./config/db.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -9,6 +14,7 @@ import commonRoutes from "./routes/commonRoutes.js";
 import doctorRoutes from "./routes/doctorRoutes.js";
 import labStaffRoutes from "./routes/labStaffRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
+dotenv.config({ quiet: true });
 
 const app = express();
 

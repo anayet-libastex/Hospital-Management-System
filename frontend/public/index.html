@@ -58,6 +58,13 @@
     .hidden-form {
       display: none;
     }
+
+    /* Success message style */
+    .success-msg {
+      color: #16a34a;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
   </style>
 </head>
 <body>
@@ -110,18 +117,18 @@
         </form>
       </div>
 
-      <!-- Register Form -->
+      <!-- Register Form (আপডেটেড) -->
       <div id="registerForm" class="form-section hidden-form">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Create Patient Account</h2>
         <form id="registerFormElement">
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-medium mb-1">Full Name</label>
-            <input type="text" id="regName" placeholder="John Doe" required
+            <input type="text" id="regName" placeholder="Your Full Name" required
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-medium mb-1">Email</label>
-            <input type="email" id="regEmail" placeholder="you@example.com" required
+            <input type="email" id="regEmail" placeholder="Your Email" required
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div class="mb-4">
@@ -131,7 +138,7 @@
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-medium mb-1">Phone</label>
-            <input type="tel" id="regPhone" placeholder="+880 1234 567890"
+            <input type="tel" id="regPhone" placeholder="Type 11 Digit Number"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div class="mb-4">
@@ -157,6 +164,7 @@
             Register
           </button>
           <div id="registerError" class="error-msg mt-2 text-center"></div>
+          <div id="registerSuccess" class="success-msg mt-2 text-center hidden"></div>
         </form>
       </div>
 
@@ -177,6 +185,7 @@
     const registerFormElement = document.getElementById('registerFormElement');
     const loginError = document.getElementById('loginError');
     const registerError = document.getElementById('registerError');
+    const registerSuccess = document.getElementById('registerSuccess');
     const navButtons = document.getElementById('navButtons');
 
     // ---------- Check if already logged in ----------
@@ -203,6 +212,7 @@
       registerForm.classList.add('hidden-form');
       loginError.textContent = '';
       registerError.textContent = '';
+      registerSuccess.classList.add('hidden');
     });
 
     registerTab.addEventListener('click', () => {
@@ -212,6 +222,7 @@
       loginForm.classList.add('hidden-form');
       loginError.textContent = '';
       registerError.textContent = '';
+      registerSuccess.classList.add('hidden');
     });
 
     // ---------- Login handler ----------
@@ -228,10 +239,11 @@
       }
     });
 
-    // ---------- Register handler ----------
+    // ---------- Register handler (অটো-লগইন বন্ধ) ----------
     registerFormElement.addEventListener('submit', async (e) => {
       e.preventDefault();
       registerError.textContent = '';
+      registerSuccess.classList.add('hidden');
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim();
       const password = document.getElementById('regPassword').value;
@@ -244,13 +256,23 @@
       }
       try {
         const data = await registerPatient(name, email, password, phone, dateOfBirth, bloodGroup);
-        handleLoginSuccess(data);
+        // Registration successful – show success message and clear form
+        registerSuccess.textContent = '✅ Registration successful! Please login.';
+        registerSuccess.classList.remove('hidden');
+        // Reset form
+        registerFormElement.reset();
+        // Optionally switch to login tab after 2 seconds
+        setTimeout(() => {
+          registerSuccess.classList.add('hidden');
+          // Switch to login tab
+          loginTab.click();
+        }, 2000);
       } catch (err) {
         registerError.textContent = err.message;
       }
     });
 
-    // ---------- After successful login/register ----------
+    // ---------- After successful login ----------
     function handleLoginSuccess(data) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
@@ -289,7 +311,7 @@
       }
     })();
 
-    // Global logout (now we can define it inside module and expose it to window if needed)
+    // Global logout
     window.logout = function() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
