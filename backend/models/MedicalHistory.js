@@ -7,7 +7,7 @@ const recordSchema = new mongoose.Schema(
     treatment: { type: String, trim: true },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Doctor',
+      ref: 'doctor',
     },
     prescriptionId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +22,7 @@ const medicalHistorySchema = new mongoose.Schema(
   {
     patientId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Patient',
+      ref: 'patient',
       required: true,
       unique: true, // one-to-one with Patient
     },

@@ -1,394 +1,2034 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Doctor Dashboard – HMS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <style>
-    /* ---------- SIDEBAR ---------- */
-    .sidebar {
-      background: #1e293b;
-      color: #e2e8f0;
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-      overflow-y: auto;
-      flex-shrink: 0;
-    }
-    .sidebar-brand {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid #334155;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      height: 72px;
-    }
-    .sidebar-brand i {
-      font-size: 1.75rem;
-      color: #60a5fa;
-    }
-    .sidebar-brand span {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: white;
-    }
-    .sidebar-user {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid #334155;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .sidebar-user .avatar {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 9999px;
-      background: #2563eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-    .sidebar-user .user-name {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: white;
-    }
-    .sidebar-user .user-role {
-      font-size: 0.75rem;
-      color: #94a3b8;
-    }
-    .sidebar-nav {
-      flex: 1;
-      padding: 1rem 0.75rem;
-      overflow-y: auto;
-    }
-    .sidebar-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.7rem 1rem;
-      border-radius: 0.5rem;
-      color: #cbd5e1;
-      transition: all 0.2s;
-      cursor: pointer;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-    .sidebar-link:hover {
-      background: #334155;
-      color: #f1f5f9;
-    }
-    .sidebar-link.active {
-      background: #2563eb;
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-    .sidebar-link i {
-      width: 1.5rem;
-      text-align: center;
-      font-size: 1.1rem;
-    }
-    .sidebar-footer {
-      border-top: 1px solid #334155;
-      padding: 1rem 1.5rem;
-    }
-    .sidebar-footer button {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      width: 100%;
-      padding: 0.7rem 1rem;
-      border-radius: 0.5rem;
-      background: transparent;
-      border: none;
-      color: #cbd5e1;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 0.95rem;
-    }
-    .sidebar-footer button:hover {
-      background: #334155;
-      color: white;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Dashboard – HMS</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ---------- SIDEBAR ---------- */
+        .sidebar {
+            background: #1e293b;
+            color: #e2e8f0;
+            width: 260px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .sidebar-brand {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            height: 72px;
+        }
+        .sidebar-brand i {
+            font-size: 1.75rem;
+            color: #60a5fa;
+        }
+        .sidebar-brand span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+        .sidebar-user {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .sidebar-user .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .sidebar-user .user-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+        .sidebar-user .user-role {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0.75rem;
+            overflow-y: auto;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            color: #cbd5e1;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .sidebar-link:hover {
+            background: #334155;
+            color: #f1f5f9;
+        }
+        .sidebar-link.active {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .sidebar-link i {
+            width: 1.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .sidebar-footer {
+            border-top: 1px solid #334155;
+            padding: 1rem 1.5rem;
+        }
+        .sidebar-footer button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+        .sidebar-footer button:hover {
+            background: #334155;
+            color: white;
+        }
 
-    /* ---------- MAIN CONTENT ---------- */
-    .main-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      background: #f1f5f9;
-    }
-    .top-bar {
-      background: white;
-      padding: 1rem 1.5rem;
-      height: 72px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #e2e8f0;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .top-bar h1 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1e293b;
-    }
-    .top-bar .welcome {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .top-bar .welcome span:first-child {
-      color: #64748b;
-      font-size: 0.9rem;
-    }
-    .top-bar .welcome span:last-child {
-      color: #1e293b;
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
+        /* ---------- MAIN CONTENT ---------- */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f1f5f9;
+        }
+        .top-bar {
+            background: white;
+            padding: 1rem 1.5rem;
+            height: 72px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .top-bar h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .top-bar .welcome {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .top-bar .welcome span:first-child {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .top-bar .welcome span:last-child {
+            color: #1e293b;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
 
-    .content-area {
-      padding: 1.5rem;
-      flex: 1;
-    }
+        .content-area {
+            padding: 1.5rem;
+            flex: 1;
+        }
 
-    /* ---------- UTILITY ---------- */
-    .tab-content {
-      animation: fadeIn 0.25s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hidden-tab {
-      display: none;
-    }
-    .input-field {
-      border: 1px solid #d1d5db;
-      border-radius: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      width: 100%;
-      outline: none;
-      transition: 0.2s;
-    }
-    .input-field:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-    .btn-primary {
-      background: #2563eb;
-      color: white;
-      padding: 0.5rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      transition: 0.2s;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-success {
-      background: #16a34a;
-      color: white;
-      padding: 0.5rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      transition: 0.2s;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .btn-success:hover { background: #15803d; }
-    .error-msg {
-      background: #fee2e2;
-      border: 1px solid #fecaca;
-      color: #b91c1c;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      display: none;
-      margin-bottom: 1rem;
-    }
-    .error-msg.show { display: block; }
-    .list-item {
-      background: white;
-      padding: 1rem 1.25rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
-      border-left: 3px solid #2563eb;
-    }
+        /* ---------- UTILITY ---------- */
+        .tab-content {
+            animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hidden-tab {
+            display: none;
+        }
+        .input-field {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input-field:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-success {
+            background: #16a34a;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-success:hover {
+            background: #15803d;
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 0.4rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.4rem;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .error-msg {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            display: none;
+            margin-bottom: 1rem;
+        }
+        .error-msg.show {
+            display: block;
+        }
 
-    /* Scrollbar */
-    .sidebar::-webkit-scrollbar { width: 4px; }
-    .sidebar::-webkit-scrollbar-thumb { background: #475569; border-radius: 8px; }
-  </style>
+        /* Scrollbar */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 8px;
+        }
+
+        /* ---------- APPOINTMENT CARD ---------- */
+        .appointment-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e9edf4;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            transition: box-shadow 0.2s;
+        }
+        .appointment-card:hover {
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+        .appointment-card .card-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem 1rem;
+        }
+        .appointment-card .patient-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #0b1a33;
+        }
+        .appointment-card .patient-name .dept {
+            font-weight: 400;
+            color: #6b7a93;
+            font-size: 0.9rem;
+        }
+        .appointment-card .datetime {
+            font-size: 0.9rem;
+            color: #4a5a72;
+            white-space: nowrap;
+        }
+        .appointment-card .datetime i {
+            margin-right: 4px;
+            color: #8a9bb5;
+            font-size: 0.8rem;
+        }
+        .appointment-card .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0.25rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .badge-status.pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .badge-status.confirmed {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .badge-status.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .badge-status.cancelled {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .appointment-card .details-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 1.5rem;
+            margin-top: 0.35rem;
+            font-size: 0.9rem;
+            color: #34465c;
+        }
+        .appointment-card .details-row .label {
+            font-weight: 500;
+            color: #5e6f89;
+            margin-right: 2px;
+        }
+        .appointment-card .notes-text {
+            margin-top: 0.2rem;
+            font-size: 0.88rem;
+            color: #5e6f89;
+        }
+        .appointment-card .notes-text i {
+            color: #8a9bb5;
+            margin-right: 4px;
+            font-size: 0.75rem;
+        }
+        .appointment-card .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 1rem;
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid #eef2f7;
+        }
+        .appointment-card .actions-row .action-btn {
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: 0.15s;
+            background: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-btn.edit-btn {
+            color: #2563eb;
+        }
+        .action-btn.edit-btn:hover {
+            background: #eff6ff;
+        }
+        .action-btn.cancel-btn {
+            color: #dc2626;
+        }
+        .action-btn.cancel-btn:hover {
+            background: #fef2f2;
+        }
+        .action-btn.history-btn {
+            color: #6b7a93;
+            font-size: 0.8rem;
+            background: #f1f4f9;
+            padding: 0.2rem 0.7rem;
+            border-radius: 6px;
+        }
+        .action-btn.history-btn:hover {
+            background: #e5e9ef;
+        }
+        .action-btn .status-select {
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #d1d9e6;
+            background: white;
+            outline: none;
+            cursor: pointer;
+        }
+        .action-btn .status-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+
+        /* ---------- PROFESSIONAL BG FOR APPOINTMENTS TAB ---------- */
+        .appointments-bg {
+            background: linear-gradient(145deg, #f8fafc 0%, #eef2f7 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .appointments-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .appointments-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.02) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .appointments-bg>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---------- EDIT MODAL ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eef2f7;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-box .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0b1a33;
+        }
+        .modal-box .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0 0.25rem;
+        }
+        .modal-box .modal-close:hover {
+            color: #1e293b;
+            transform: rotate(90deg);
+        }
+        .modal-box .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .modal-box .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+        .modal-box .form-group .input-field {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            transition: 0.2s;
+        }
+        .modal-box .form-group .input-field:focus {
+            background: white;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+        .modal-box .form-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eef2f7;
+        }
+        .modal-box .form-actions .btn-secondary {
+            background: #f1f4f9;
+            color: #334155;
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-box .form-actions .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .modal-box .form-actions .btn-save {
+            background: #2563eb;
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal-box .form-actions .btn-save:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .modal-box .form-actions .btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ---------- PRESCRIPTION FORM ENHANCEMENT ---------- */
+        .appointment-select-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .appointment-select-group select {
+            flex: 1;
+        }
+        .appointment-select-group .btn-refresh {
+            background: #e2e8f0;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            color: #475569;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .appointment-select-group .btn-refresh:hover {
+            background: #cbd5e1;
+        }
+
+        /* Medicine list */
+        .medicine-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+        .medicine-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.3rem;
+            border: 1px solid #e9edf4;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .medicine-list li .med-name {
+            font-weight: 500;
+            color: #0b1a33;
+        }
+        .medicine-list li .med-dosage {
+            color: #475569;
+            font-size: 0.85rem;
+        }
+        .medicine-list li .med-schedule {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.2rem 0.5rem;
+        }
+        .medicine-list li .med-time-badge {
+            font-size: 0.7rem;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 0.05rem 0.5rem;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .medicine-list li .med-meal-badge {
+            font-size: 0.7rem;
+            background: #fef3c7;
+            color: #b45309;
+            padding: 0.05rem 0.5rem;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .medicine-list li .med-remove {
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-left: auto;
+        }
+        .medicine-list li .med-remove:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Time checkboxes */
+        .time-checkboxes {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-top: 0.2rem;
+        }
+        .time-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            color: #1e293b;
+            cursor: pointer;
+        }
+        .time-checkboxes input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #2563eb;
+            cursor: pointer;
+        }
+
+        /* ---------- PATIENT HISTORY MODAL (specific styles) ---------- */
+        .history-modal-box {
+            max-width: 700px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        .history-modal-box .section-title {
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 0.3rem;
+            margin: 1.2rem 0 0.8rem 0;
+            font-size: 1.1rem;
+        }
+        .history-modal-box .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 1.5rem;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e9edf4;
+        }
+        .history-modal-box .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .history-modal-box .info-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .history-modal-box .info-item .value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #0b1a33;
+        }
+        .history-modal-box .history-list {
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        .history-modal-box .history-item {
+            background: #f1f5f9;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid #2563eb;
+        }
+        .history-modal-box .history-item .h-date {
+            font-size: 0.8rem;
+            color: #475569;
+            font-weight: 500;
+        }
+        .history-modal-box .history-item .h-diagnosis {
+            font-weight: 600;
+            color: #0b1a33;
+        }
+        .history-modal-box .history-item .h-doctor {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .history-modal-box .empty-history {
+            text-align: center;
+            color: #94a3b8;
+            padding: 1rem;
+            font-style: italic;
+        }
+
+        /* ---------- LAB REQUEST FORM ENHANCEMENT ---------- */
+        .lab-patient-select-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .lab-patient-select-group select {
+            flex: 1;
+        }
+        .lab-patient-select-group .btn-refresh {
+            background: #e2e8f0;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            color: #475569;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lab-patient-select-group .btn-refresh:hover {
+            background: #cbd5e1;
+        }
+
+        /* Test type list (dynamic) */
+        .testtype-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+        .testtype-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.3rem;
+            border: 1px solid #e9edf4;
+        }
+        .testtype-list li .test-name {
+            font-weight: 500;
+            color: #0b1a33;
+        }
+        .testtype-list li .test-remove {
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .testtype-list li .test-remove:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* ---------- LAB REQUEST EDIT MODAL ---------- */
+        .lab-edit-modal-box {
+            max-width: 600px;
+        }
+        .lab-edit-modal-box .testtype-list {
+            margin-top: 0.3rem;
+        }
+
+        /* responsive tweaks */
+        @media (max-width: 640px) {
+            .appointment-card .card-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .appointment-card .datetime {
+                white-space: normal;
+            }
+            .appointment-card .actions-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .appointment-card .actions-row .action-btn {
+                justify-content: center;
+            }
+            .modal-box {
+                padding: 1.5rem;
+            }
+            .appointments-bg {
+                padding: 1rem;
+            }
+            .medicine-input-group {
+                flex-direction: column;
+            }
+            .time-checkboxes {
+                gap: 0.8rem;
+            }
+            .history-modal-box .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="flex">
+    <div class="flex">
 
-  <!-- ===== SIDEBAR ===== -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <i class="fas fa-user-md"></i>
-      <span>HMS Doctor</span>
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-user-md"></i>
+                <span>HMS Doctor</span>
+            </div>
+
+            <div class="sidebar-user">
+                <div class="avatar" id="userInitial">D</div>
+                <div>
+                    <div class="user-name" id="userName">Doctor</div>
+                    <div class="user-role">Physician</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" onclick="switchTab('tabAppointments')" class="sidebar-link active" data-tab="tabAppointments">
+                    <i class="fas fa-calendar-check"></i> Appointments
+                </a>
+                <a href="#" onclick="switchTab('tabPrescription')" class="sidebar-link" data-tab="tabPrescription">
+                    <i class="fas fa-prescription"></i> Prescription
+                </a>
+                <a href="#" onclick="switchTab('tabLabRequests')" class="sidebar-link" data-tab="tabLabRequests">
+                    <i class="fas fa-flask"></i> Lab Requests
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN ===== -->
+        <div class="main-area">
+
+            <header class="top-bar">
+                <h1 id="pageTitle">Appointments</h1>
+                <div class="welcome">
+                    <span>Welcome back,</span>
+                    <span id="userNameTop">Doctor</span>
+                </div>
+            </header>
+
+            <div class="content-area">
+
+                <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
+
+                <!-- ===== TAB: Appointments ===== -->
+                <div id="tabAppointments" class="tab-content">
+                    <div class="appointments-bg">
+                        <h2 class="text-2xl font-bold mb-4 text-slate-800">My Appointments</h2>
+                        <div id="appointmentList"></div>
+                    </div>
+                </div>
+
+                <!-- ===== TAB: Prescription ===== -->
+                <div id="tabPrescription" class="tab-content hidden-tab">
+                    <h2 class="text-2xl font-bold mb-4">Create Prescription</h2>
+                    <form id="createPrescriptionForm" class="bg-white p-4 rounded shadow">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Appointment ID - select dropdown -->
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Appointment</label>
+                                <div class="appointment-select-group">
+                                    <select id="appointmentSelect" name="appointmentId" required class="input-field">
+                                        <option value="">-- Select Appointment --</option>
+                                    </select>
+                                    <button type="button" class="btn-refresh" onclick="resetPrescriptionForm()" title="Reset selection">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Patient ID - auto populated -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Patient ID</label>
+                                <input id="patientIdInput" name="patientId" placeholder="Patient ID" required class="input-field" readonly />
+                            </div>
+                            <!-- Diagnosis -->
+                            <div class="col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Diagnosis</label>
+                                <input name="diagnosis" placeholder="Diagnosis" required class="input-field" />
+                            </div>
+                            <!-- Medicine - Dynamic UI with Time & Meal Relation -->
+                            <div class="col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Medicine</label>
+                                <div class="flex flex-wrap gap-2 items-center medicine-input-group">
+                                    <input type="text" id="medNameInput" placeholder="Medicine name" class="input-field flex-1 min-w-[120px]" />
+                                    <input type="text" id="medDosageInput" placeholder="Dosage (e.g. 500mg)" class="input-field flex-1 min-w-[90px]" />
+                                </div>
+                                <!-- Time checkboxes -->
+                                <div class="mt-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">When to take</label>
+                                    <div class="time-checkboxes">
+                                        <label><input type="checkbox" id="timeMorning" /> Morning</label>
+                                        <label><input type="checkbox" id="timeAfternoon" /> Afternoon</label>
+                                        <label><input type="checkbox" id="timeNight" /> Night</label>
+                                    </div>
+                                </div>
+                                <!-- Meal relation dropdown -->
+                                <div class="mt-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Meal relation</label>
+                                    <select id="mealRelationSelect" class="input-field">
+                                        <option value="before meal">Before meal</option>
+                                        <option value="after meal">After meal</option>
+                                        <option value="with meal">With meal</option>
+                                        <option value="empty stomach">Empty stomach</option>
+                                    </select>
+                                </div>
+                                <div class="mt-2">
+                                    <button type="button" onclick="addMedicine()" class="btn-secondary">
+                                        <i class="fas fa-plus"></i> Add Medicine
+                                    </button>
+                                </div>
+                                <!-- Hidden field to store JSON data -->
+                                <input type="hidden" id="medicinesJson" name="medicines" value="[]" />
+                                <!-- Medicine list display -->
+                                <ul id="medicineListDisplay" class="medicine-list"></ul>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle"></i> Add medicine with schedule. One medicine can be taken at multiple times (check multiple boxes).</p>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary mt-3"><i class="fas fa-plus"></i> Create Prescription</button>
+                    </form>
+                </div>
+
+                <!-- ===== TAB: Lab Requests (আপডেটেড – ডায়নামিক টেস্ট টাইপ, Edit ও Delete বাটন) ===== -->
+                <div id="tabLabRequests" class="tab-content hidden-tab">
+                    <h2 class="text-2xl font-bold mb-4">Lab Test Requests</h2>
+                    <form id="createLabRequestForm" class="bg-white p-4 rounded shadow mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Patient selection dropdown -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Select Patient <span class="required-star">*</span></label>
+                                <div class="lab-patient-select-group">
+                                    <select id="labPatientSelect" class="input-field" required>
+                                        <option value="">-- Select Patient --</option>
+                                    </select>
+                                    <button type="button" class="btn-refresh" onclick="loadLabPatients()" title="Refresh patient list">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="labPatientId" name="patientId" value="" />
+                            </div>
+                            <!-- Test Type - Dynamic UI (like medicine) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Test Types <span class="required-star">*</span></label>
+                                <div class="flex flex-wrap gap-2 items-center">
+                                    <input type="text" id="testTypeInput" placeholder="e.g., Blood Test, X-Ray" class="input-field flex-1 min-w-[180px]" />
+                                    <button type="button" onclick="addTestType()" class="btn-secondary">
+                                        <i class="fas fa-plus"></i> Add
+                                    </button>
+                                </div>
+                                <!-- Hidden field to store JSON array -->
+                                <input type="hidden" id="testTypesJson" name="testTypes" value="[]" />
+                                <!-- Test type list display -->
+                                <ul id="testTypeListDisplay" class="testtype-list"></ul>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle"></i> Add one or more test types. They will be saved as an array.</p>
+                            </div>
+                            <!-- Notes -->
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Notes <span class="text-xs text-gray-400">(optional)</span></label>
+                                <input name="notes" placeholder="Additional instructions or details" class="input-field" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-success mt-3"><i class="fas fa-flask"></i> Request Lab Test</button>
+                    </form>
+                    <div id="labRequestList"></div>
+                </div>
+
+            </div>
+            <!-- end content-area -->
+        </div>
+        <!-- end main-area -->
+    </div>
+    <!-- end flex -->
+
+    <!-- ===== EDIT MODAL (for Appointment) ===== -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit text-blue-600 mr-2"></i>Edit Appointment</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editAppointmentForm">
+                <input type="hidden" id="editAppointmentId" />
+                <div class="form-group">
+                    <label for="editReason"><i class="fas fa-comment-medical mr-1 text-blue-400"></i> Reason</label>
+                    <input type="text" id="editReason" class="input-field" placeholder="e.g. Fever, Checkup" required />
+                </div>
+                <div class="form-group">
+                    <label for="editType"><i class="fas fa-tag mr-1 text-blue-400"></i> Appointment Type</label>
+                    <select id="editType" class="input-field" required>
+                        <option value="general">General</option>
+                        <option value="followup">Followup</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="specialist">Specialist</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="editSaveBtn">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="sidebar-user">
-      <div class="avatar" id="userInitial">D</div>
-      <div>
-        <div class="user-name" id="userName">Doctor</div>
-        <div class="user-role">Physician</div>
-      </div>
+    <!-- ===== PATIENT HISTORY MODAL ===== -->
+    <div id="patientHistoryModal" class="modal-overlay">
+        <div class="modal-box history-modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-history text-blue-600 mr-2"></i> Patient History</h3>
+                <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+            </div>
+            <div id="historyModalBody">
+                <!-- Dynamic content inserted here -->
+            </div>
+        </div>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" onclick="switchTab('tabAppointments')" class="sidebar-link active" data-tab="tabAppointments">
-        <i class="fas fa-calendar-check"></i> Appointments
-      </a>
-      <a href="#" onclick="switchTab('tabPrescription')" class="sidebar-link" data-tab="tabPrescription">
-        <i class="fas fa-prescription"></i> Prescription
-      </a>
-      <a href="#" onclick="switchTab('tabLabRequests')" class="sidebar-link" data-tab="tabLabRequests">
-        <i class="fas fa-flask"></i> Lab Requests
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <button onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
+    <!-- ===== LAB REQUEST EDIT MODAL ===== -->
+    <div id="labEditModal" class="modal-overlay">
+        <div class="modal-box lab-edit-modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit text-blue-600 mr-2"></i> Edit Lab Request</h3>
+                <button class="modal-close" onclick="closeLabEditModal()">&times;</button>
+            </div>
+            <form id="labEditForm">
+                <input type="hidden" id="labEditRequestId" />
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient <span class="required-star">*</span></label>
+                    <select id="labEditPatientSelect" class="input-field" required>
+                        <option value="">-- Select Patient --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Test Types <span class="required-star">*</span></label>
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <input type="text" id="labEditTestTypeInput" placeholder="e.g., Blood Test" class="input-field flex-1 min-w-[150px]" />
+                        <button type="button" onclick="addEditTestType()" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <input type="hidden" id="labEditTestTypesJson" value="[]" />
+                    <ul id="labEditTestTypeList" class="testtype-list"></ul>
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select id="labEditStatus" class="input-field">
+                        <option value="pending">Pending</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="completed">Completed</option>
+                        <option value="reported">Reported</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Notes (optional)</label>
+                    <input type="text" id="labEditNotes" class="input-field" placeholder="Additional notes" />
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeLabEditModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="labEditSaveBtn">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-  </aside>
 
-  <!-- ===== MAIN ===== -->
-  <div class="main-area">
+    <!-- ===== SCRIPTS (সমস্ত ফাংশন ইনলাইন) ===== -->
+    <script type="module">
+        // ---- import from doctor.js (optional – for apiFetch, etc.) ----
+        import { apiFetch } from '../assets/js/api.js';
+        import { logout, getCurrentUser } from '../assets/js/auth.js';
 
-    <header class="top-bar">
-      <h1 id="pageTitle">Appointments</h1>
-      <div class="welcome">
-        <span>Welcome back,</span>
-        <span id="userNameTop">Doctor</span>
-      </div>
-    </header>
+        // expose logout to window
+        window.logout = function() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '../public/index.html';
+        };
 
-    <div class="content-area">
+        // ---- helpers ----
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            if (el) {
+                document.getElementById('errorText').textContent = msg;
+                el.classList.add('show');
+                setTimeout(() => el.classList.remove('show'), 5000);
+            }
+        }
 
-      <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
+        function hideError() {
+            const el = document.getElementById('errorMsg');
+            if (el) el.classList.remove('show');
+        }
 
-      <!-- ===== TAB: Appointments ===== -->
-      <div id="tabAppointments" class="tab-content">
-        <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
-        <div id="appointmentList"></div>
-      </div>
+        // ---- EDIT MODAL (Appointment) ----
+        let editingAppointmentId = null;
 
-      <!-- ===== TAB: Prescription ===== -->
-      <div id="tabPrescription" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">Create Prescription</h2>
-        <form id="createPrescriptionForm" class="bg-white p-4 rounded shadow">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input name="appointmentId" placeholder="Appointment ID" required class="input-field">
-            <input name="patientId" placeholder="Patient ID" required class="input-field">
-            <input name="diagnosis" placeholder="Diagnosis" required class="input-field">
-            <textarea name="medicines" placeholder='Medicines (JSON array: [{"name":"...","dosage":"..."}])' class="input-field col-span-2" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn-primary mt-3"><i class="fas fa-plus"></i> Create Prescription</button>
-        </form>
-      </div>
+        window.openEditModal = function(appointmentId, currentReason, currentType) {
+            editingAppointmentId = appointmentId;
+            document.getElementById('editAppointmentId').value = appointmentId;
+            document.getElementById('editReason').value = currentReason || '';
+            document.getElementById('editType').value = (currentType || 'general').toLowerCase();
+            document.getElementById('editModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
 
-      <!-- ===== TAB: Lab Requests ===== -->
-      <div id="tabLabRequests" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">Lab Test Requests</h2>
-        <form id="createLabRequestForm" class="bg-white p-4 rounded shadow mb-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input name="patientId" placeholder="Patient ID" required class="input-field">
-            <input name="testType" placeholder="Test Type" required class="input-field">
-            <input name="notes" placeholder="Notes" class="input-field col-span-2">
-          </div>
-          <button type="submit" class="btn-success mt-3"><i class="fas fa-flask"></i> Request Lab Test</button>
-        </form>
-        <div id="labRequestList"></div>
-      </div>
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.remove('active');
+            document.body.style.overflow = '';
+            editingAppointmentId = null;
+        };
 
-    </div><!-- end content-area -->
-  </div><!-- end main-area -->
-</div><!-- end flex -->
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
 
-<script type="module" src="../assets/js/doctor/doctor.js"></script>
-<script>
-  // Override switchTab to handle sidebar active state and page title
-  window.switchTab = function(tabId) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden-tab'));
-    // Show selected tab
-    const target = document.getElementById(tabId);
-    if (target) target.classList.remove('hidden-tab');
+        document.getElementById('editAppointmentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('editAppointmentId').value;
+            const reason = document.getElementById('editReason').value.trim();
+            const appointmentType = document.getElementById('editType').value;
 
-    // Update sidebar active link
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.classList.remove('active');
-      if (link.dataset.tab === tabId) {
-        link.classList.add('active');
-      }
-    });
+            if (!reason) {
+                alert('Please enter a reason.');
+                return;
+            }
 
-    // Update page title
-    const titles = {
-      tabAppointments: 'Appointments',
-      tabPrescription: 'Prescription',
-      tabLabRequests: 'Lab Requests'
-    };
-    document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
+            const btn = document.getElementById('editSaveBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-    // Load respective data (functions from doctor.js)
-    if (tabId === 'tabAppointments') {
-      if (typeof loadAppointments === 'function') loadAppointments();
-    } else if (tabId === 'tabLabRequests') {
-      if (typeof loadLabRequests === 'function') loadLabRequests();
-    }
-    // Prescription tab doesn't need auto-load
-  };
+            try {
+                await apiFetch(`/doctor/appointments/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ reason, appointmentType }),
+                });
+                closeEditModal();
+                await loadAppointments();
+                const msg = document.getElementById('errorText');
+                const el = document.getElementById('errorMsg');
+                msg.textContent = '✅ Appointment updated successfully!';
+                el.classList.remove('show');
+                el.style.background = '#d1fae5';
+                el.style.borderColor = '#6ee7b7';
+                el.style.color = '#065f46';
+                el.classList.add('show');
+                setTimeout(() => {
+                    el.classList.remove('show');
+                    el.style.background = '';
+                    el.style.borderColor = '';
+                    el.style.color = '';
+                }, 3000);
+            } catch (err) {
+                showError('Update failed: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            }
+        });
 
-  // Logout function
-  window.logout = function() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '../public/index.html';
-  };
+        // ---- render appointment cards ----
+        function renderAppointmentCard(a) {
+            const status = a.status || 'pending';
+            const patientName = a.patientId?.name || 'Unknown Patient';
+            const deptName = a.departmentId?.name || a.department || 'N/A';
+            const dateObj = new Date(a.date);
+            const formattedDate = dateObj.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            const timeStr = a.time || '';
+            const badgeClass = status.toLowerCase();
 
-  // On load, set user name and default tab (Appointments)
-  document.addEventListener('DOMContentLoaded', () => {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    if (user) {
-      const initial = user.name ? user.name.charAt(0).toUpperCase() : 'D';
-      document.getElementById('userInitial').textContent = initial;
-      document.getElementById('userName').textContent = user.name || 'Doctor';
-      document.getElementById('userNameTop').textContent = user.name || 'Doctor';
-    }
-    // Default tab: Appointments
-    switchTab('tabAppointments');
-  });
-</script>
+            let html = `
+            <div class="appointment-card">
+              <div class="card-row">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="patient-name">
+                    ${patientName} <span class="dept">(${deptName})</span>
+                  </span>
+                </div>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span class="datetime"><i class="far fa-calendar-alt"></i> ${formattedDate} ${timeStr ? '· ' + timeStr : ''}</span>
+                  <span class="badge-status ${badgeClass}">
+                    <span class="w-1.5 h-1.5 rounded-full inline-block ${status === 'pending' ? 'bg-amber-500' : status === 'confirmed' ? 'bg-blue-500' : status === 'completed' ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
+                    ${status}
+                  </span>
+                </div>
+              </div>
+
+              <div class="details-row">
+                <span><span class="label">Reason:</span> ${a.reason || 'N/A'}</span>
+                <span><span class="label">Type:</span> ${a.appointmentType ? a.appointmentType.charAt(0).toUpperCase() + a.appointmentType.slice(1) : 'N/A'}</span>
+              </div>
+          `;
+
+            if (a.notes) {
+                html += `
+              <div class="notes-text">
+                <i class="fas fa-pen"></i> ${a.notes}
+              </div>
+            `;
+            }
+
+            html += `
+              <div class="actions-row">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <select onchange="window.updateStatus('${a._id}', this.value)" class="status-select">
+                    <option value="pending" ${status === 'pending' ? 'selected' : ''}>Pending</option>
+                    <option value="confirmed" ${status === 'confirmed' ? 'selected' : ''}>Confirm</option>
+                    <option value="completed" ${status === 'completed' ? 'selected' : ''}>Complete</option>
+                    <option value="cancelled" ${status === 'cancelled' ? 'selected' : ''}>Cancel</option>
+                  </select>
+
+                  <button onclick="window.openPatientHistoryModal('${a._id}')" class="action-btn history-btn">
+                    <i class="fas fa-history"></i> History
+                  </button>
+                </div>
+
+                <div class="flex items-center gap-1 flex-wrap">
+          `;
+
+            if (status === 'pending') {
+                const reason = (a.reason || '').replace(/"/g, '&quot;');
+                const type = (a.appointmentType || 'general').toLowerCase();
+                html += `
+                  <button onclick="window.openEditModal('${a._id}', '${reason}', '${type}')" class="action-btn edit-btn">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button onclick="window.cancelAppointment('${a._id}')" class="action-btn cancel-btn">
+                    <i class="fas fa-times"></i> Cancel
+                  </button>
+                `;
+            }
+
+            html += `
+                </div>
+              </div>
+            </div>
+          `;
+
+            return html;
+        }
+
+        // ---- load appointments ----
+        async function loadAppointments() {
+            try {
+                const appointments = await apiFetch('/doctor/appointments');
+                const container = document.getElementById('appointmentList');
+                if (!container) return;
+
+                if (!appointments || appointments.length === 0) {
+                    container.innerHTML = `
+                <div class="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-100">
+                  <i class="fas fa-calendar-check text-5xl text-gray-300 mb-3 block"></i>
+                  <p class="text-gray-500 font-medium">No appointments scheduled</p>
+                  <p class="text-sm text-gray-400">You have no upcoming appointments at this time.</p>
+                </div>
+              `;
+                    return;
+                }
+
+                container.innerHTML = appointments.map(renderAppointmentCard).join('');
+                await loadAppointmentOptions(appointments);
+            } catch (err) {
+                showError('Failed to load appointments: ' + err.message);
+            }
+        }
+
+        // ---- reset prescription form ----
+        window.resetPrescriptionForm = function() {
+            const select = document.getElementById('appointmentSelect');
+            const patientIdInput = document.getElementById('patientIdInput');
+            if (select) {
+                select.selectedIndex = 0;
+            }
+            if (patientIdInput) {
+                patientIdInput.value = '';
+            }
+            window.medicineList = [];
+            updateMedicineUI();
+            document.getElementById('timeMorning').checked = false;
+            document.getElementById('timeAfternoon').checked = false;
+            document.getElementById('timeNight').checked = false;
+            document.getElementById('mealRelationSelect').value = 'before meal';
+            loadAppointmentOptions();
+        };
+
+        // ---- medicine dynamic list ----
+        window.medicineList = [];
+
+        window.addMedicine = function() {
+            const nameInput = document.getElementById('medNameInput');
+            const dosageInput = document.getElementById('medDosageInput');
+            const name = nameInput.value.trim();
+            const dosage = dosageInput.value.trim();
+
+            const times = [];
+            if (document.getElementById('timeMorning').checked) times.push('Morning');
+            if (document.getElementById('timeAfternoon').checked) times.push('Afternoon');
+            if (document.getElementById('timeNight').checked) times.push('Night');
+
+            const mealRelation = document.getElementById('mealRelationSelect').value;
+
+            if (!name) {
+                alert('Please enter a medicine name.');
+                nameInput.focus();
+                return;
+            }
+            if (!dosage) {
+                alert('Please enter a dosage.');
+                dosageInput.focus();
+                return;
+            }
+            if (times.length === 0) {
+                alert('Please select at least one time (Morning, Afternoon, Night).');
+                return;
+            }
+
+            window.medicineList.push({ name, dosage, times, mealRelation });
+            nameInput.value = '';
+            dosageInput.value = '';
+            document.getElementById('timeMorning').checked = false;
+            document.getElementById('timeAfternoon').checked = false;
+            document.getElementById('timeNight').checked = false;
+            document.getElementById('mealRelationSelect').value = 'before meal';
+            nameInput.focus();
+            updateMedicineUI();
+        };
+
+        window.removeMedicine = function(index) {
+            window.medicineList.splice(index, 1);
+            updateMedicineUI();
+        };
+
+        function updateMedicineUI() {
+            const listEl = document.getElementById('medicineListDisplay');
+            const hiddenJson = document.getElementById('medicinesJson');
+            if (window.medicineList.length === 0) {
+                listEl.innerHTML = `<li class="text-gray-400 text-sm py-1">No medicines added yet.</li>`;
+            } else {
+                listEl.innerHTML = window.medicineList.map((med, i) => `
+                    <li>
+                        <span>
+                            <span class="med-name">${med.name}</span>
+                            <span class="med-dosage">(${med.dosage})</span>
+                        </span>
+                        <span class="med-schedule">
+                            ${med.times.map(t => `<span class="med-time-badge"><i class="far fa-clock"></i> ${t}</span>`).join('')}
+                            <span class="med-meal-badge"><i class="fas fa-utensils"></i> ${med.mealRelation}</span>
+                        </span>
+                        <span class="med-remove" onclick="removeMedicine(${i})"><i class="fas fa-times-circle"></i></span>
+                    </li>
+                `).join('');
+            }
+            hiddenJson.value = JSON.stringify(window.medicineList);
+        }
+
+        // ---- load appointment options for prescription dropdown ----
+        async function loadAppointmentOptions(appointmentsData) {
+            const select = document.getElementById('appointmentSelect');
+            const patientIdInput = document.getElementById('patientIdInput');
+            if (!select) return;
+
+            let appointments = appointmentsData;
+            if (!appointments) {
+                try {
+                    appointments = await apiFetch('/doctor/appointments');
+                } catch (err) {
+                    console.error('Failed to load appointments for dropdown:', err);
+                    return;
+                }
+            }
+
+            const validAppointments = appointments.filter(a => a.status === 'pending' || a.status === 'confirmed');
+
+            while (select.options.length > 0) {
+                select.remove(0);
+            }
+            select.add(new Option('-- Select Appointment --', ''));
+
+            validAppointments.forEach(a => {
+                const patientName = a.patientId?.name || 'Unknown';
+                const date = new Date(a.date).toLocaleDateString();
+                const label = `${patientName} (${date} ${a.time || ''}) - ${a.status}`;
+                select.add(new Option(label, a._id));
+            });
+
+            if (validAppointments.length === 0) {
+                select.add(new Option('No pending/confirmed appointments', ''));
+            }
+
+            select.selectedIndex = 0;
+            if (patientIdInput) {
+                patientIdInput.value = '';
+            }
+        }
+
+        document.getElementById('appointmentSelect')?.addEventListener('change', async function() {
+            const appointmentId = this.value;
+            const patientIdInput = document.getElementById('patientIdInput');
+            if (!appointmentId) {
+                patientIdInput.value = '';
+                return;
+            }
+
+            try {
+                const appointments = await apiFetch('/doctor/appointments');
+                const appointment = appointments.find(a => a._id === appointmentId);
+                if (appointment && appointment.patientId) {
+                    patientIdInput.value = appointment.patientId._id || appointment.patientId;
+                } else {
+                    patientIdInput.value = '';
+                }
+            } catch (err) {
+                console.error('Failed to get patient ID:', err);
+                patientIdInput.value = '';
+            }
+        });
+
+        // ---- update status ----
+        window.updateStatus = async function(id, status) {
+            try {
+                await apiFetch(`/doctor/appointments/${id}/status`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ status }),
+                });
+                await loadAppointments();
+            } catch (err) {
+                showError('Status update failed: ' + err.message);
+            }
+        };
+
+        // ---- cancel appointment ----
+        window.cancelAppointment = async function(id) {
+            if (!confirm('Cancel this appointment?')) return;
+            try {
+                await apiFetch(`/doctor/appointments/${id}/status`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ status: 'cancelled' }),
+                });
+                await loadAppointments();
+            } catch (err) {
+                showError('Cancel failed: ' + err.message);
+            }
+        };
+
+        // ---- open patient history modal ----
+        window.openPatientHistoryModal = async function(appointmentId) {
+            try {
+                const appointments = await apiFetch('/doctor/appointments');
+                const appointment = appointments.find(a => a._id === appointmentId);
+                if (!appointment) {
+                    showError('Appointment not found');
+                    return;
+                }
+
+                const patientId = appointment.patientId?._id;
+                let historyData = { records: [] };
+                if (patientId) {
+                    try {
+                        historyData = await apiFetch(`/doctor/patients/${patientId}/medical-history`);
+                    } catch (err) {
+                        if (err.message && err.message.includes('No medical history found')) {
+                            historyData = { records: [] };
+                        } else {
+                            console.warn('Failed to fetch medical history:', err);
+                        }
+                    }
+                }
+
+                const modalBody = document.getElementById('historyModalBody');
+                const records = historyData.records || [];
+
+                const patientName = appointment.patientId?.name || 'Unknown Patient';
+                const deptName = appointment.departmentId?.name || 'N/A';
+                const docName = appointment.doctorId?.name || 'N/A';
+                const date = new Date(appointment.date).toLocaleDateString('en-US', {
+                    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+                });
+                const time = appointment.time || '';
+
+                let historyHtml = `
+                    <div class="mb-4">
+                        <div class="section-title"><i class="fas fa-user mr-2"></i> Patient Details</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Name</span>
+                                <span class="value">${patientName}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Department</span>
+                                <span class="value">${deptName}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Doctor</span>
+                                <span class="value">${docName}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Date & Time</span>
+                                <span class="value">${date} · ${time}</span>
+                            </div>
+                            ${appointment.reason ? `
+                            <div class="info-item">
+                                <span class="label">Reason</span>
+                                <span class="value">${appointment.reason}</span>
+                            </div>
+                            ` : ''}
+                            ${appointment.appointmentType ? `
+                            <div class="info-item">
+                                <span class="label">Type</span>
+                                <span class="value">${appointment.appointmentType.charAt(0).toUpperCase() + appointment.appointmentType.slice(1)}</span>
+                            </div>
+                            ` : ''}
+                            ${appointment.notes ? `
+                            <div class="info-item" style="grid-column: span 2;">
+                                <span class="label">Notes</span>
+                                <span class="value">${appointment.notes}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                let historyListHtml = '';
+                if (records.length === 0) {
+                    historyListHtml = `<div class="empty-history">No previous medical records found.</div>`;
+                } else {
+                    historyListHtml = records.map((rec, idx) => {
+                        const recDate = new Date(rec.date).toLocaleDateString('en-US', {
+                            year: 'numeric', month: 'short', day: 'numeric'
+                        });
+                        const docNameHist = rec.doctorId?.name || 'Unknown Doctor';
+                        return `
+                            <div class="history-item">
+                                <div class="h-date">${recDate}</div>
+                                <div class="h-diagnosis">${rec.diagnosis || 'N/A'}</div>
+                                <div class="h-doctor"><i class="fas fa-user-md mr-1"></i> ${docNameHist}</div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                historyHtml += `
+                    <div class="mt-3">
+                        <div class="section-title"><i class="fas fa-notes-medical mr-2"></i> Medical History (${records.length} records)</div>
+                        <div class="history-list">
+                            ${historyListHtml}
+                        </div>
+                    </div>
+                `;
+
+                modalBody.innerHTML = historyHtml;
+                document.getElementById('patientHistoryModal').classList.add('active');
+            } catch (err) {
+                showError('Failed to load patient history: ' + err.message);
+            }
+        };
+
+        window.closeHistoryModal = function() {
+            document.getElementById('patientHistoryModal').classList.remove('active');
+        };
+
+        // ---- Test Type dynamic list (for create) ----
+        window.testTypes = [];
+
+        window.addTestType = function() {
+            const input = document.getElementById('testTypeInput');
+            const name = input.value.trim();
+            if (!name) {
+                alert('Please enter a test type name.');
+                return;
+            }
+            if (window.testTypes.includes(name)) {
+                alert('Test type already added.');
+                return;
+            }
+            window.testTypes.push(name);
+            input.value = '';
+            input.focus();
+            updateTestTypeUI();
+        };
+
+        window.removeTestType = function(index) {
+            window.testTypes.splice(index, 1);
+            updateTestTypeUI();
+        };
+
+        function updateTestTypeUI() {
+            const listEl = document.getElementById('testTypeListDisplay');
+            const hiddenJson = document.getElementById('testTypesJson');
+            if (window.testTypes.length === 0) {
+                listEl.innerHTML = `<li class="text-gray-400 text-sm py-1">No test types added yet.</li>`;
+            } else {
+                listEl.innerHTML = window.testTypes.map((type, idx) => `
+                    <li>
+                        <span class="test-name">${type}</span>
+                        <span class="test-remove" onclick="removeTestType(${idx})"><i class="fas fa-times-circle"></i></span>
+                    </li>
+                `).join('');
+            }
+            hiddenJson.value = JSON.stringify(window.testTypes);
+        }
+
+        // ---- load lab patients (for create and edit dropdown) ----
+        let allPatients = [];
+
+        window.loadLabPatients = async function() {
+            try {
+                const appointments = await apiFetch('/doctor/appointments');
+                const patientMap = new Map();
+                appointments.forEach(a => {
+                    if (a.patientId && a.patientId._id) {
+                        if (!patientMap.has(a.patientId._id)) {
+                            patientMap.set(a.patientId._id, {
+                                _id: a.patientId._id,
+                                name: a.patientId.name || 'Unknown'
+                            });
+                        }
+                    }
+                });
+                allPatients = Array.from(patientMap.values());
+
+                // Populate create dropdown
+                const selectCreate = document.getElementById('labPatientSelect');
+                const hiddenInput = document.getElementById('labPatientId');
+                if (selectCreate) {
+                    selectCreate.innerHTML = '<option value="">-- Select Patient --</option>';
+                    allPatients.forEach(p => {
+                        selectCreate.innerHTML += `<option value="${p._id}">${p.name}</option>`;
+                    });
+                    selectCreate.onchange = function() {
+                        hiddenInput.value = this.value;
+                    };
+                }
+
+                // Populate edit dropdown (will be filled when edit modal opens)
+                const selectEdit = document.getElementById('labEditPatientSelect');
+                if (selectEdit) {
+                    selectEdit.innerHTML = '<option value="">-- Select Patient --</option>';
+                    allPatients.forEach(p => {
+                        selectEdit.innerHTML += `<option value="${p._id}">${p.name}</option>`;
+                    });
+                }
+            } catch (err) {
+                showError('Failed to load patients: ' + err.message);
+            }
+        };
+
+        // ---- lab request form submit ----
+        document.getElementById('createLabRequestForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            const hiddenId = document.getElementById('labPatientId');
+            if (hiddenId) {
+                data.patientId = hiddenId.value;
+            }
+            if (!data.patientId) {
+                showError('Please select a patient.');
+                return;
+            }
+
+            const testTypesJson = document.getElementById('testTypesJson').value;
+            let testTypes = [];
+            try {
+                testTypes = JSON.parse(testTypesJson);
+            } catch (e) {
+                showError('Invalid test types data.');
+                return;
+            }
+            if (!testTypes || testTypes.length === 0) {
+                showError('Please add at least one test type.');
+                return;
+            }
+
+            const payload = {
+                patientId: data.patientId,
+                notes: data.notes || '',
+                testTypes: testTypes
+            };
+
+            try {
+                await apiFetch('/doctor/lab-requests', {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                });
+                form.reset();
+                document.getElementById('labPatientSelect').selectedIndex = 0;
+                document.getElementById('labPatientId').value = '';
+                window.testTypes = [];
+                updateTestTypeUI();
+                await loadLabRequests();
+                alert('Lab request sent successfully!');
+            } catch (err) {
+                showError('Lab request failed: ' + err.message);
+            }
+        });
+
+        // ---- load lab requests (with Edit & Delete buttons) ----
+        async function loadLabRequests() {
+            try {
+                const requests = await apiFetch('/doctor/lab-requests');
+                const container = document.getElementById('labRequestList');
+                if (!container) return;
+                if (!requests || requests.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-10 bg-white rounded-lg shadow-sm border border-gray-100">
+                            <i class="fas fa-flask text-4xl text-gray-300 mb-3 block"></i>
+                            <p class="text-gray-500 font-medium">No lab requests</p>
+                            <p class="text-sm text-gray-400">You haven't requested any lab tests yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                container.innerHTML = requests.map((r) => {
+                    const statusColor = r.status === 'reported' ? 'text-emerald-600' : 'text-amber-600';
+                    let testDisplay = r.testTypes ? r.testTypes.join(', ') : (r.testType || 'N/A');
+                    return `
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 mb-3 hover:shadow-md transition-shadow">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+                                <div>
+                                    <div class="font-medium text-gray-800">${r.patientId?.name || 'N/A'}</div>
+                                    <div class="text-sm text-gray-500">Test(s): ${testDisplay}</div>
+                                    <div class="text-sm text-gray-500">Status: <span class="font-medium ${statusColor} capitalize">${r.status}</span></div>
+                                    ${r.notes ? `<div class="text-sm text-gray-500">Notes: ${r.notes}</div>` : ''}
+                                    ${r.result ? `<div class="text-sm text-emerald-600 mt-1">Result: ${r.result}</div>` : ''}
+                                </div>
+                                <div class="flex flex-col items-end gap-2">
+                                    <div class="text-sm text-gray-400">
+                                        ${r.status === 'reported' ? '<i class="fas fa-check-circle text-emerald-500 mr-1"></i> Completed' : ''}
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="openLabEditModal('${r._id}')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button onclick="deleteLabRequest('${r._id}')" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                showError('Failed to load lab requests: ' + err.message);
+            }
+        }
+
+        // ---- Lab Edit Modal functions ----
+        let currentEditTestTypes = [];
+
+        window.openLabEditModal = async function(requestId) {
+            try {
+                // Fetch the specific lab request
+                const requests = await apiFetch('/doctor/lab-requests');
+                const request = requests.find(r => r._id === requestId);
+                if (!request) {
+                    showError('Lab request not found');
+                    return;
+                }
+
+                // Populate modal fields
+                document.getElementById('labEditRequestId').value = requestId;
+                document.getElementById('labEditPatientSelect').value = request.patientId?._id || '';
+                document.getElementById('labEditStatus').value = request.status || 'pending';
+                document.getElementById('labEditNotes').value = request.notes || '';
+
+                // Populate test types
+                currentEditTestTypes = request.testTypes || [];
+                renderEditTestTypes();
+
+                document.getElementById('labEditModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } catch (err) {
+                showError('Failed to load lab request for edit: ' + err.message);
+            }
+        };
+
+        window.closeLabEditModal = function() {
+            document.getElementById('labEditModal').classList.remove('active');
+            document.body.style.overflow = '';
+            currentEditTestTypes = [];
+            renderEditTestTypes();
+        };
+
+        // Add test type in edit modal
+        window.addEditTestType = function() {
+            const input = document.getElementById('labEditTestTypeInput');
+            const name = input.value.trim();
+            if (!name) {
+                alert('Please enter a test type name.');
+                return;
+            }
+            if (currentEditTestTypes.includes(name)) {
+                alert('Test type already added.');
+                return;
+            }
+            currentEditTestTypes.push(name);
+            input.value = '';
+            input.focus();
+            renderEditTestTypes();
+        };
+
+        window.removeEditTestType = function(index) {
+            currentEditTestTypes.splice(index, 1);
+            renderEditTestTypes();
+        };
+
+        function renderEditTestTypes() {
+            const listEl = document.getElementById('labEditTestTypeList');
+            const hiddenJson = document.getElementById('labEditTestTypesJson');
+            if (currentEditTestTypes.length === 0) {
+                listEl.innerHTML = `<li class="text-gray-400 text-sm py-1">No test types added.</li>`;
+            } else {
+                listEl.innerHTML = currentEditTestTypes.map((type, idx) => `
+                    <li>
+                        <span class="test-name">${type}</span>
+                        <span class="test-remove" onclick="removeEditTestType(${idx})"><i class="fas fa-times-circle"></i></span>
+                    </li>
+                `).join('');
+            }
+            hiddenJson.value = JSON.stringify(currentEditTestTypes);
+        }
+
+        // ---- Submit edit lab request ----
+        document.getElementById('labEditForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const requestId = document.getElementById('labEditRequestId').value;
+            const patientId = document.getElementById('labEditPatientSelect').value;
+            const status = document.getElementById('labEditStatus').value;
+            const notes = document.getElementById('labEditNotes').value.trim();
+
+            if (!patientId) {
+                showError('Please select a patient.');
+                return;
+            }
+            if (currentEditTestTypes.length === 0) {
+                showError('Please add at least one test type.');
+                return;
+            }
+
+            const payload = {
+                patientId,
+                status,
+                notes,
+                testTypes: currentEditTestTypes
+            };
+
+            const btn = document.getElementById('labEditSaveBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+
+            try {
+                await apiFetch(`/doctor/lab-requests/${requestId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(payload),
+                });
+                closeLabEditModal();
+                await loadLabRequests();
+                alert('Lab request updated successfully!');
+            } catch (err) {
+                showError('Update failed: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Update';
+            }
+        });
+
+        // ---- Delete lab request ----
+        window.deleteLabRequest = async function(requestId) {
+            if (!confirm('Are you sure you want to delete this lab request?')) return;
+            try {
+                await apiFetch(`/doctor/lab-requests/${requestId}`, {
+                    method: 'DELETE',
+                });
+                await loadLabRequests();
+                alert('Lab request deleted successfully!');
+            } catch (err) {
+                showError('Delete failed: ' + err.message);
+            }
+        };
+
+        // ---- switch tab ----
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden-tab'));
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden-tab');
+
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.tab === tabId) {
+                    link.classList.add('active');
+                }
+            });
+
+            const titles = {
+                tabAppointments: 'Appointments',
+                tabPrescription: 'Prescription',
+                tabLabRequests: 'Lab Requests'
+            };
+            document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
+
+            if (tabId === 'tabAppointments') {
+                loadAppointments();
+            } else if (tabId === 'tabLabRequests') {
+                loadLabPatients();   // load patient dropdown
+                loadLabRequests();
+                // Reset create test types
+                window.testTypes = [];
+                updateTestTypeUI();
+            } else if (tabId === 'tabPrescription') {
+                resetPrescriptionForm();
+                loadAppointmentOptions();
+            }
+        };
+
+        // ---- on load ----
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            if (user) {
+                const initial = user.name ? user.name.charAt(0).toUpperCase() : 'D';
+                document.getElementById('userInitial').textContent = initial;
+                document.getElementById('userName').textContent = user.name || 'Doctor';
+                document.getElementById('userNameTop').textContent = user.name || 'Doctor';
+            }
+            window.medicineList = [];
+            updateMedicineUI();
+            window.testTypes = [];
+            updateTestTypeUI();
+            window.switchTab('tabAppointments');
+        });
+
+        // expose functions to window
+        window.loadAppointments = loadAppointments;
+        window.loadLabRequests = loadLabRequests;
+        window.resetPrescriptionForm = resetPrescriptionForm;
+        window.addMedicine = addMedicine;
+        window.removeMedicine = removeMedicine;
+        window.openPatientHistoryModal = openPatientHistoryModal;
+        window.closeHistoryModal = closeHistoryModal;
+        window.loadLabPatients = loadLabPatients;
+        window.updateStatus = updateStatus;
+        window.cancelAppointment = cancelAppointment;
+        window.addTestType = addTestType;
+        window.removeTestType = removeTestType;
+        window.openLabEditModal = openLabEditModal;
+        window.closeLabEditModal = closeLabEditModal;
+        window.addEditTestType = addEditTestType;
+        window.removeEditTestType = removeEditTestType;
+        window.deleteLabRequest = deleteLabRequest;
+
+    </script>
+
 </body>
 </html>

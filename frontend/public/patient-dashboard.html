@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Patient Dashboard – HMS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
   <style>
     /* ---------- SIDEBAR ---------- */
     .sidebar {
@@ -132,7 +132,7 @@
       background: white;
       padding: 1rem 1.5rem;
       height: 72px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -171,27 +171,17 @@
       animation: fadeIn 0.25s ease;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .stat-card {
-      background: white;
-      padding: 1.25rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      border-left: 4px solid #2563eb;
-      transition: 0.2s;
-    }
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-    .form-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      margin-bottom: 1.5rem;
+    .hidden-tab {
+      display: none;
     }
     .input-field {
       border: 1px solid #d1d5db;
@@ -218,7 +208,9 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .btn-primary:hover { background: #1d4ed8; }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
     .btn-success {
       background: #16a34a;
       color: white;
@@ -232,7 +224,9 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .btn-success:hover { background: #15803d; }
+    .btn-success:hover {
+      background: #15803d;
+    }
     .btn-danger {
       background: #dc2626;
       color: white;
@@ -244,7 +238,9 @@
       cursor: pointer;
       font-size: 0.85rem;
     }
-    .btn-danger:hover { background: #b91c1c; }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
     .btn-warning {
       background: #f59e0b;
       color: white;
@@ -256,17 +252,8 @@
       cursor: pointer;
       font-size: 0.85rem;
     }
-    .btn-warning:hover { background: #d97706; }
-    .list-item {
-      background: white;
-      padding: 1rem 1.25rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
-      border-left: 3px solid #2563eb;
+    .btn-warning:hover {
+      background: #d97706;
     }
     .error-msg {
       background: #fee2e2;
@@ -277,9 +264,8 @@
       display: none;
       margin-bottom: 1rem;
     }
-    .error-msg.show { display: block; }
-    .hidden-tab {
-      display: none;
+    .error-msg.show {
+      display: block;
     }
 
     /* Modal overlay */
@@ -315,329 +301,480 @@
     }
 
     /* Scrollbar */
-    .sidebar::-webkit-scrollbar { width: 4px; }
-    .sidebar::-webkit-scrollbar-thumb { background: #475569; border-radius: 8px; }
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 8px;
+    }
 
     /* Required field indicator */
     .required-star {
       color: #dc2626;
       margin-left: 2px;
     }
+
+    /* Duplicate transaction ID tooltip/error */
+    .txn-error-tooltip {
+      color: #dc2626;
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    .txn-error-tooltip.show {
+      display: block;
+    }
+
+    /* ---------- PROFESSIONAL HELP BOX ---------- */
+    .help-box {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f4f9 100%);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid #e9edf4;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .help-box .help-icon {
+      color: #2563eb;
+      font-size: 1.2rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+      background: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    }
+    .help-box .help-title {
+      font-weight: 600;
+      color: #0b1a33;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    .help-box .help-desc {
+      color: #475569;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .help-box .help-desc strong {
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    /* ---------- SEARCH BAR WITH CLEAR BUTTON ---------- */
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      min-width: 200px;
+    }
+    .search-wrapper .input-field {
+      flex: 1;
+      padding-right: 2.5rem; /* space for the clear button */
+    }
+    .search-wrapper .clear-btn {
+      position: relative;
+      left: -2.2rem;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0;
+      transition: color 0.2s;
+      margin-right: -2.2rem; /* keep button inside input */
+      z-index: 2;
+    }
+    .search-wrapper .clear-btn:hover {
+      color: #1e293b;
+    }
+    .search-wrapper .clear-btn.hidden {
+      display: none;
+    }
+    .search-group {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
 
-<div class="flex">
+  <div class="flex">
 
-  <!-- ===== SIDEBAR ===== -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <i class="fas fa-hospital"></i>
-      <span>HMS Patient</span>
-    </div>
-
-    <div class="sidebar-user">
-      <div class="avatar" id="userInitial">P</div>
-      <div>
-        <div class="user-name" id="userName">Patient</div>
-        <div class="user-role">Patient</div>
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fas fa-hospital"></i>
+        <span>HMS Patient</span>
       </div>
-    </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" onclick="switchTab('tabBooking')" class="sidebar-link active" data-tab="tabBooking">
-        <i class="fas fa-calendar-plus"></i> Book Appointment
-      </a>
-      <a href="#" onclick="switchTab('tabAppointments')" class="sidebar-link" data-tab="tabAppointments">
-        <i class="fas fa-calendar-check"></i> My Appointments
-      </a>
-      <a href="#" onclick="switchTab('tabPrescriptions')" class="sidebar-link" data-tab="tabPrescriptions">
-        <i class="fas fa-prescription-bottle"></i> Prescriptions
-      </a>
-      <a href="#" onclick="switchTab('tabHistory')" class="sidebar-link" data-tab="tabHistory">
-        <i class="fas fa-notes-medical"></i> Medical History
-      </a>
-      <a href="#" onclick="switchTab('tabPayment')" class="sidebar-link" data-tab="tabPayment">
-        <i class="fas fa-credit-card"></i> Payment
-      </a>
-      <a href="#" onclick="switchTab('tabReports')" class="sidebar-link" data-tab="tabReports">
-        <i class="fas fa-file-download"></i> Download Reports
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <button onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
-    </div>
-  </aside>
-
-  <!-- ===== MAIN ===== -->
-  <div class="main-area">
-
-    <header class="top-bar">
-      <h1 id="pageTitle">Book Appointment</h1>
-      <div class="welcome">
-        <span>Welcome back,</span>
-        <span id="userNameTop">Patient</span>
+      <div class="sidebar-user">
+        <div class="avatar" id="userInitial">P</div>
+        <div>
+          <div class="user-name" id="userName">Patient</div>
+          <div class="user-role">Patient</div>
+        </div>
       </div>
-    </header>
 
-    <div class="content-area">
+      <nav class="sidebar-nav">
+        <a href="#" onclick="switchTab('tabBooking')" class="sidebar-link active" data-tab="tabBooking">
+          <i class="fas fa-calendar-plus"></i> Book Appointment
+        </a>
+        <a href="#" onclick="switchTab('tabAppointments')" class="sidebar-link" data-tab="tabAppointments">
+          <i class="fas fa-calendar-check"></i> My Appointments
+        </a>
+        <a href="#" onclick="switchTab('tabPrescriptions')" class="sidebar-link" data-tab="tabPrescriptions">
+          <i class="fas fa-prescription-bottle"></i> Prescriptions
+        </a>
+        <a href="#" onclick="switchTab('tabHistory')" class="sidebar-link" data-tab="tabHistory">
+          <i class="fas fa-notes-medical"></i> Medical History
+        </a>
+        <a href="#" onclick="switchTab('tabPayment')" class="sidebar-link" data-tab="tabPayment">
+          <i class="fas fa-credit-card"></i> Payment
+        </a>
+        <a href="#" onclick="switchTab('tabLabRequests')" class="sidebar-link" data-tab="tabLabRequests">
+          <i class="fas fa-flask"></i> My Lab Requests
+        </a>
+        <a href="#" onclick="switchTab('tabReports')" class="sidebar-link" data-tab="tabReports">
+          <i class="fas fa-file-download"></i> Download Reports
+        </a>
+      </nav>
 
-      <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
+      <div class="sidebar-footer">
+        <button onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
 
-      <!-- ===== TAB: Book Appointment (আপডেটেড ফর্ম) ===== -->
-      <div id="tabBooking" class="tab-content">
-        <h2 class="text-2xl font-bold mb-4">Book an Appointment</h2>
-        <form id="bookAppointmentForm" class="bg-white p-6 rounded-lg shadow-md">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Department -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Department <span class="required-star">*</span>
-              </label>
-              <select id="bookingDepartment" name="departmentId" required class="input-field">
-                <option value="">Select Department</option>
-              </select>
+    <!-- ===== MAIN ===== -->
+    <div class="main-area">
+
+      <header class="top-bar">
+        <h1 id="pageTitle">Book Appointment</h1>
+        <div class="welcome">
+          <span>Welcome back,</span>
+          <span id="userNameTop">Patient</span>
+        </div>
+      </header>
+
+      <div class="content-area">
+
+        <div id="errorMsg" class="error-msg"><span id="errorText"></span></div>
+
+        <!-- ===== TAB: Book Appointment ===== -->
+        <div id="tabBooking" class="tab-content">
+          <h2 class="text-2xl font-bold mb-4">Book an Appointment</h2>
+          <form id="bookAppointmentForm" class="bg-white p-6 rounded-lg shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Department <span class="required-star">*</span></label>
+                <select id="bookingDepartment" name="departmentId" required class="input-field">
+                  <option value="">Select Department</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Doctor <span class="required-star">*</span></label>
+                <select id="bookingDoctor" name="doctorId" required class="input-field">
+                  <option value="">Select Doctor</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Date <span class="required-star">*</span></label>
+                <input type="date" name="date" required class="input-field">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Time <span class="required-star">*</span></label>
+                <input type="time" name="time" required class="input-field">
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Visit <span class="required-star">*</span></label>
+                <input type="text" name="reason" placeholder="e.g., Fever, Checkup" required class="input-field">
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Appointment Type <span class="text-xs text-gray-400">(optional)</span></label>
+                <select name="appointmentType" class="input-field">
+                  <option value="general">General</option>
+                  <option value="followup">Follow-up</option>
+                  <option value="emergency">Emergency</option>
+                  <option value="telemedicine">Telemedicine</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Notes <span class="text-xs text-gray-400">(optional)</span></label>
+                <input name="notes" placeholder="Special instructions" class="input-field">
+              </div>
             </div>
+            <button type="submit" class="btn-primary mt-4 w-full md:w-auto">
+              <i class="fas fa-plus"></i> Book Appointment
+            </button>
+          </form>
+        </div>
 
-            <!-- Doctor -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Doctor <span class="required-star">*</span>
-              </label>
-              <select id="bookingDoctor" name="doctorId" required class="input-field">
-                <option value="">Select Doctor</option>
-              </select>
-            </div>
+        <!-- ===== TAB: My Appointments ===== -->
+        <div id="tabAppointments" class="tab-content hidden-tab">
+          <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
+          <div id="appointmentList"></div>
+        </div>
 
-            <!-- Date -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Date <span class="required-star">*</span>
-              </label>
-              <input type="date" name="date" required class="input-field">
-            </div>
+        <!-- ===== TAB: Prescriptions ===== -->
+        <div id="tabPrescriptions" class="tab-content hidden-tab">
+          <h2 class="text-2xl font-bold mb-4">My Prescriptions</h2>
+          <div id="prescriptionList"></div>
+        </div>
 
-            <!-- Time -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Time <span class="required-star">*</span>
-              </label>
-              <input type="time" name="time" required class="input-field">
-            </div>
+        <!-- ===== TAB: Medical History ===== -->
+        <div id="tabHistory" class="tab-content hidden-tab">
+          <h2 class="text-2xl font-bold mb-4">Medical History</h2>
+          <div id="historyList"></div>
+        </div>
 
-            <!-- ✅ নতুন: Reason for Visit (Mandatory) -->
-            <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Reason for Visit <span class="required-star">*</span>
-              </label>
-              <input type="text" name="reason" placeholder="e.g., Fever, Checkup, Follow-up" required class="input-field">
+        <!-- ===== TAB: Payment ===== -->
+        <div id="tabPayment" class="tab-content hidden-tab">
+          <h2 class="text-2xl font-bold mb-4">Make Payment</h2>
+          <form id="paymentForm" class="bg-white p-4 rounded shadow">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Appointment <span class="required-star">*</span></label>
+                <select id="paymentAppointmentSelect" class="input-field" required>
+                  <option value="">-- Select Appointment --</option>
+                </select>
+                <input type="hidden" id="paymentAppointmentId" name="appointmentId" value="">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Amount <span class="required-star">*</span></label>
+                <input name="amount" type="number" placeholder="Amount" required class="input-field">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method <span class="required-star">*</span></label>
+                <select name="method" required class="input-field">
+                  <option value="">Select Method</option>
+                  <option value="bkash">Bkash</option>
+                  <option value="rocket">Rocket</option>
+                  <option value="nogod">Nagod</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Transaction ID <span class="required-star">*</span></label>
+                <input type="text" name="transactionId" id="paymentTransactionId" placeholder="e.g. TXN-1234567890" required class="input-field">
+                <div id="duplicateTxnError" class="txn-error-tooltip">
+                  <i class="fas fa-exclamation-circle mr-1"></i> This Transaction ID has already been used. Please enter a different one.
+                </div>
+                <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle"></i> Enter your payment transaction ID (e.g., from bKash, Rocket, Nagad).</p>
+              </div>
             </div>
+            <button type="submit" class="btn-success mt-3"><i class="fas fa-credit-card"></i> Pay Now</button>
+          </form>
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-2">Your Payment History</h3>
+            <div id="paymentHistoryList" class="space-y-2"></div>
+          </div>
+        </div>
 
-            <!-- ✅ নতুন: Appointment Type (Optional) -->
-            <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Appointment Type <span class="text-xs text-gray-400">(optional)</span>
-              </label>
-              <select name="appointmentType" class="input-field">
-                <option value="general">General Checkup</option>
-                <option value="followup">Follow-up</option>
-                <option value="emergency">Emergency</option>
-                <option value="telemedicine">Telemedicine</option>
-              </select>
-            </div>
+        <!-- ===== TAB: My Lab Requests ===== -->
+        <div id="tabLabRequests" class="tab-content hidden-tab">
+          <h2 class="text-2xl font-bold mb-4">My Lab Requests</h2>
+          <div id="labRequestList"></div>
+          <p class="text-sm text-gray-500 mt-2">
+            <i class="fas fa-info-circle"></i> Copy the <strong>Request ID</strong> from above and use it in the <strong>Download Reports</strong> tab.
+          </p>
+        </div>
 
-            <!-- Notes (Optional) -->
-            <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Notes <span class="text-xs text-gray-400">(optional)</span>
-              </label>
-              <input name="notes" placeholder="Special instructions or additional notes" class="input-field">
+        <!-- ===== TAB: Download Reports (with clear button) ===== -->
+        <div id="tabReports" class="tab-content hidden-tab">
+          <h2 class="text-2xl font-bold mb-4">Download Reports</h2>
+          <p class="text-gray-600">Enter Lab Request ID to view/download report:</p>
+          <div class="mt-2 flex gap-2 items-center search-group">
+            <div class="search-wrapper">
+              <input id="reportIdInput" placeholder="Lab Request ID" class="input-field" />
+              <button id="clearReportBtn" class="clear-btn hidden" onclick="document.getElementById('reportIdInput').value=''; this.classList.add('hidden');">
+                <i class="fas fa-times-circle"></i>
+              </button>
             </div>
+            <button onclick="downloadReport(document.getElementById('reportIdInput').value)" class="btn-primary">
+              <i class="fas fa-search"></i> View Report
+            </button>
           </div>
 
-          <button type="submit" class="btn-primary mt-4 w-full md:w-auto">
-            <i class="fas fa-plus"></i> Book Appointment
-          </button>
-        </form>
-      </div>
+          <!-- Professional Help Box -->
+          <div class="help-box">
+            <div class="help-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div>
+              <div class="help-title">Where to find Lab Request ID?</div>
+              <div class="help-desc">
+                Go to <strong>"My Lab Requests"</strong> tab – you'll see a list of all lab tests requested by your doctor.
+                Each request has an ID; click <strong>"Copy ID"</strong> and paste it here.
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <!-- ===== TAB: My Appointments ===== -->
-      <div id="tabAppointments" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">My Appointments</h2>
-        <div id="appointmentList"></div>
       </div>
+      <!-- end content-area -->
+    </div>
+    <!-- end main-area -->
+  </div>
+  <!-- end flex -->
 
-      <!-- ===== TAB: Prescriptions ===== -->
-      <div id="tabPrescriptions" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">My Prescriptions</h2>
-        <div id="prescriptionList"></div>
+  <!-- ===== EDIT APPOINTMENT MODAL ===== -->
+  <div id="editAppointmentModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-gray-800">Edit Appointment</h3>
+        <button onclick="closeEditAppointmentModal()" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times text-xl"></i>
+        </button>
       </div>
-
-      <!-- ===== TAB: Medical History ===== -->
-      <div id="tabHistory" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">Medical History</h2>
-        <div id="historyList"></div>
-      </div>
-
-      <!-- ===== TAB: Payment ===== -->
-      <div id="tabPayment" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">Make Payment</h2>
-        <form id="paymentForm" class="bg-white p-4 rounded shadow">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input name="appointmentId" placeholder="Appointment ID" required class="input-field">
-            <input name="amount" type="number" placeholder="Amount" required class="input-field">
-            <select name="method" required class="input-field">
-              <option value="">Payment Method</option>
-              <option value="bkash">Bkash</option>
-              <option value="rocket">Rocket</option>
-              <option value="nogod">Nagod</option>
+      <form id="editAppointmentForm">
+        <input type="hidden" id="editAppointmentId" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+            <select id="editDepartment" name="departmentId" required class="input-field">
+              <option value="">Select Department</option>
             </select>
           </div>
-          <button type="submit" class="btn-success mt-3"><i class="fas fa-credit-card"></i> Pay Now</button>
-        </form>
-      </div>
-
-      <!-- ===== TAB: Download Reports ===== -->
-      <div id="tabReports" class="tab-content hidden-tab">
-        <h2 class="text-2xl font-bold mb-4">Download Reports</h2>
-        <p class="text-gray-600">Enter Lab Request ID to view/download report:</p>
-        <div class="mt-2 flex gap-2">
-          <input id="reportIdInput" placeholder="Lab Request ID" class="input-field flex-1">
-          <button onclick="downloadReport(document.getElementById('reportIdInput').value)" class="btn-primary">
-            <i class="fas fa-search"></i> View Report
-          </button>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+            <select id="editDoctor" name="doctorId" required class="input-field">
+              <option value="">Select Doctor</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input type="date" id="editDate" name="date" required class="input-field">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+            <input type="time" id="editTime" name="time" required class="input-field">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+            <input type="text" id="editReason" name="reason" placeholder="Reason for visit" class="input-field">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Appointment Type</label>
+            <select id="editAppointmentType" name="appointmentType" class="input-field">
+              <option value="general">General</option>
+              <option value="followup">Follow-up</option>
+              <option value="emergency">Emergency</option>
+              <option value="telemedicine">Telemedicine</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <input type="text" id="editNotes" name="notes" placeholder="Notes" class="input-field">
+          </div>
         </div>
-      </div>
-
-    </div><!-- end content-area -->
-  </div><!-- end main-area -->
-</div><!-- end flex -->
-
-<!-- ===== EDIT APPOINTMENT MODAL ===== -->
-<div id="editAppointmentModal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-bold text-gray-800">Edit Appointment</h3>
-      <button onclick="closeEditAppointmentModal()" class="text-gray-400 hover:text-gray-600">
-        <i class="fas fa-times text-xl"></i>
-      </button>
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button" onclick="closeEditAppointmentModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+          <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Appointment</button>
+        </div>
+      </form>
     </div>
-    <form id="editAppointmentForm">
-      <input type="hidden" id="editAppointmentId" />
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
-          <select id="editDepartment" name="departmentId" required class="input-field">
-            <option value="">Select Department</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
-          <select id="editDoctor" name="doctorId" required class="input-field">
-            <option value="">Select Doctor</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-          <input type="date" id="editDate" name="date" required class="input-field">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
-          <input type="time" id="editTime" name="time" required class="input-field">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
-          <input type="text" id="editReason" name="reason" placeholder="Reason for visit" class="input-field">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Appointment Type</label>
-          <select id="editAppointmentType" name="appointmentType" class="input-field">
-            <option value="general">General Checkup</option>
-            <option value="followup">Follow-up</option>
-            <option value="emergency">Emergency</option>
-            <option value="telemedicine">Telemedicine</option>
-          </select>
-        </div>
-        <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-          <input type="text" id="editNotes" name="notes" placeholder="Notes" class="input-field">
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 mt-4">
-        <button type="button" onclick="closeEditAppointmentModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
-        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Appointment</button>
-      </div>
-    </form>
   </div>
-</div>
 
-<script type="module" src="../assets/js/patient/patient.js"></script>
-<script>
-  // Override switchTab to handle sidebar active state and page title
-  window.switchTab = function(tabId) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden-tab'));
-    // Show selected tab
-    const target = document.getElementById(tabId);
-    if (target) target.classList.remove('hidden-tab');
+  <script type="module" src="../assets/js/patient/patient.js">
+  </script>
+  <script>
+    // Override switchTab to handle sidebar active state and page title
+    window.switchTab = function(tabId) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden-tab'));
+      // Show selected tab
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden-tab');
 
-    // Update sidebar active link
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.classList.remove('active');
-      if (link.dataset.tab === tabId) {
-        link.classList.add('active');
+      // Update sidebar active link
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.tab === tabId) {
+          link.classList.add('active');
+        }
+      });
+
+      // Update page title
+      const titles = {
+        tabBooking: 'Book Appointment',
+        tabAppointments: 'My Appointments',
+        tabPrescriptions: 'Prescriptions',
+        tabHistory: 'Medical History',
+        tabPayment: 'Payment',
+        tabLabRequests: 'My Lab Requests',
+        tabReports: 'Download Reports'
+      };
+      document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
+
+      // Load respective data
+      if (tabId === 'tabBooking') {
+        if (typeof loadBookingOptions === 'function') loadBookingOptions();
+      } else if (tabId === 'tabAppointments') {
+        if (typeof loadAppointments === 'function') loadAppointments();
+      } else if (tabId === 'tabPrescriptions') {
+        if (typeof loadPrescriptions === 'function') loadPrescriptions();
+      } else if (tabId === 'tabHistory') {
+        if (typeof loadMedicalHistory === 'function') loadMedicalHistory();
+      } else if (tabId === 'tabPayment') {
+        if (typeof loadPaymentAppointments === 'function') loadPaymentAppointments();
+        if (typeof loadPaymentHistory === 'function') loadPaymentHistory();
+      } else if (tabId === 'tabLabRequests') {
+        if (typeof loadLabRequests === 'function') loadLabRequests();
+      }
+    };
+
+    // Logout function
+    window.logout = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '../public/index.html';
+    };
+
+    // Modal close function
+    window.closeEditAppointmentModal = function() {
+      document.getElementById('editAppointmentModal').classList.remove('active');
+    };
+
+    // Show/hide clear button based on input value
+    document.addEventListener('DOMContentLoaded', function() {
+      const input = document.getElementById('reportIdInput');
+      const clearBtn = document.getElementById('clearReportBtn');
+      if (input && clearBtn) {
+        input.addEventListener('input', function() {
+          if (this.value.length > 0) {
+            clearBtn.classList.remove('hidden');
+          } else {
+            clearBtn.classList.add('hidden');
+          }
+        });
+        // initial check
+        if (input.value.length > 0) {
+          clearBtn.classList.remove('hidden');
+        }
       }
     });
 
-    // Update page title
-    const titles = {
-      tabBooking: 'Book Appointment',
-      tabAppointments: 'My Appointments',
-      tabPrescriptions: 'Prescriptions',
-      tabHistory: 'Medical History',
-      tabPayment: 'Payment',
-      tabReports: 'Download Reports'
-    };
-    document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
-
-    // Load respective data
-    if (tabId === 'tabBooking') {
-      if (typeof loadBookingOptions === 'function') loadBookingOptions();
-    } else if (tabId === 'tabAppointments') {
-      if (typeof loadAppointments === 'function') loadAppointments();
-    } else if (tabId === 'tabPrescriptions') {
-      if (typeof loadPrescriptions === 'function') loadPrescriptions();
-    } else if (tabId === 'tabHistory') {
-      if (typeof loadMedicalHistory === 'function') loadMedicalHistory();
-    }
-  };
-
-  // Logout function
-  window.logout = function() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '../public/index.html';
-  };
-
-  // Modal close function
-  window.closeEditAppointmentModal = function() {
-    document.getElementById('editAppointmentModal').classList.remove('active');
-  };
-
-  // On load, set user name and default tab (Booking)
-  document.addEventListener('DOMContentLoaded', () => {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    if (user) {
-      const initial = user.name ? user.name.charAt(0).toUpperCase() : 'P';
-      document.getElementById('userInitial').textContent = initial;
-      document.getElementById('userName').textContent = user.name || 'Patient';
-      document.getElementById('userNameTop').textContent = user.name || 'Patient';
-    }
-    switchTab('tabBooking');
-  });
-</script>
+    // On load, set user name and default tab (Booking)
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem('user') || 'null');
+      if (user) {
+        const initial = user.name ? user.name.charAt(0).toUpperCase() : 'P';
+        document.getElementById('userInitial').textContent = initial;
+        document.getElementById('userName').textContent = user.name || 'Patient';
+        document.getElementById('userNameTop').textContent = user.name || 'Patient';
+      }
+      switchTab('tabBooking');
+    });
+  </script>
 </body>
 </html>

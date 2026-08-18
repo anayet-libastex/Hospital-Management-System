@@ -1,17 +1,15 @@
 import mongoose from 'mongoose';
-import './Doctor.js';   // Doctor ডিসক্রিমিনেটর রেজিস্টার
-import './Patient.js';  // Patient ডিসক্রিমিনেটর রেজিস্টার
 
 const appointmentSchema = new mongoose.Schema(
   {
     patientId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'patient',
+      ref: 'patient', 
       required: true,
     },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'doctor',
+      ref: 'doctor', 
       required: true,
     },
     departmentId: {
@@ -21,24 +19,14 @@ const appointmentSchema = new mongoose.Schema(
     },
     date: { type: Date, required: true },
     time: { type: String, required: true },
+    reason: { type: String },
+    appointmentType: { type: String, enum: ['general', 'followup', 'emergency', 'specialist'], default: 'general' },
+    notes: { type: String },
     status: {
       type: String,
       enum: ['pending', 'confirmed', 'completed', 'cancelled'],
       default: 'pending',
     },
-    // ✅ নতুন ফিল্ড – Reason for Visit (Mandatory)
-    reason: { 
-      type: String, 
-      trim: true,
-      required: true,
-    },
-    // ✅ নতুন ফিল্ড – Appointment Type (Optional)
-    appointmentType: {
-      type: String,
-      enum: ['general', 'followup', 'emergency', 'telemedicine'],
-      default: 'general',
-    },
-    notes: { type: String, trim: true },
   },
   { timestamps: true }
 );

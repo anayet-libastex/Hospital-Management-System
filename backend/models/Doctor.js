@@ -20,6 +20,6 @@ const doctorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Doctor = User.discriminator('doctor', doctorSchema);
+const Doctor = User.discriminator('doctor', doctorSchema)
 
 export default Doctor;
