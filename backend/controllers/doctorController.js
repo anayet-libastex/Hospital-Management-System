@@ -263,3 +263,100 @@ export const deleteLabRequest = async (req, res) => {
     res.status(500).json({ msg: 'Server error: ' + err.message });
   }
 };
+
+// ✅ NEW: Get all prescriptions created by the logged-in doctor
+// @route   GET /api/doctor/prescriptions
+export const getPrescriptions = async (req, res) => {
+  try {
+    const doctorId = req.user.id;
+    const prescriptions = await Prescription.find({ doctorId })
+      .populate('patientId', 'name email')
+      .sort({ date: -1 });
+
+    res.json(prescriptions);
+  } catch (err) {
+    console.error('❌ Error in getPrescriptions:', err);
+    res.status(500).json({ msg: 'Server error: ' + err.message });
+  }
+};
+
+// ✅ NEW: Update a prescription (diagnosis and medicines)
+// @route   PUT /api/doctor/prescriptions/:id
+export const updatePrescription = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { patientId, diagnosis, medicines } = req.body;
+    const doctorId = req.user.id;
+
+    // Find the prescription
+    const prescription = await Prescription.findOne({ _id: id, doctorId });
+    if (!prescription) {
+      return res.status(404).json({ msg: 'Prescription not found or not yours' });
+    }
+
+    // Validate input
+    if (!patientId || !diagnosis || !medicines || !Array.isArray(medicines) || medicines.length === 0) {
+      return res.status(400).json({ msg: 'Patient ID, diagnosis, and at least one medicine are required' });
+    }
+
+    // Process medicines (add defaults)
+    const processedMedicines = medicines.map(med => ({
+      name: med.name,
+      dosage: med.dosage || '',
+      duration: med.duration || '',
+      instructions: med.instructions || '',
+      times: Array.isArray(med.times) ? med.times : [],
+      mealRelation: med.mealRelation || 'before meal',
+    }));
+
+    // Update prescription
+    prescription.patientId = patientId;
+    prescription.diagnosis = diagnosis;
+    prescription.medicines = processedMedicines;
+    await prescription.save();
+
+    // Optionally update the medical history record? We'll update the diagnosis in the history as well.
+    // Find the corresponding medical history and update the record for this prescription.
+    const history = await MedicalHistory.findOne({ patientId });
+    if (history) {
+      const record = history.records.find(r => r.prescriptionId && r.prescriptionId.toString() === id);
+      if (record) {
+        record.diagnosis = diagnosis;
+        await history.save();
+      }
+    }
+
+    res.json({ msg: 'Prescription updated successfully', prescription });
+  } catch (err) {
+    console.error('❌ Error in updatePrescription:', err);
+    res.status(500).json({ msg: 'Server error: ' + err.message });
+  }
+};
+
+// ✅ NEW: Delete a prescription
+// @route   DELETE /api/doctor/prescriptions/:id
+export const deletePrescription = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doctorId = req.user.id;
+
+    const prescription = await Prescription.findOne({ _id: id, doctorId });
+    if (!prescription) {
+      return res.status(404).json({ msg: 'Prescription not found or not yours' });
+    }
+
+    // Remove from medical history as well
+    const patientId = prescription.patientId;
+    const history = await MedicalHistory.findOne({ patientId });
+    if (history) {
+      history.records = history.records.filter(r => r.prescriptionId && r.prescriptionId.toString() !== id);
+      await history.save();
+    }
+
+    await prescription.deleteOne();
+    res.json({ msg: 'Prescription deleted successfully' });
+  } catch (err) {
+    console.error('❌ Error in deletePrescription:', err);
+    res.status(500).json({ msg: 'Server error: ' + err.message });
+  }
+};

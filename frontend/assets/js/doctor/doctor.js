@@ -7,6 +7,7 @@ function showError(msg) {
   if (el) {
     el.querySelector('span').textContent = msg;
     el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 5000);
   }
 }
 
@@ -365,19 +366,29 @@ export async function loadLabRequests() {
   }
 }
 
-// ---------- Prescription ----------
+// ---------- Prescription (আপডেটেড – ডিবাগ লগসহ) ----------
 document.getElementById('createPrescriptionForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const form = e.target;
   const data = Object.fromEntries(new FormData(form));
+  console.log('📤 Sending prescription data:', data);
+
   try {
-    await apiFetch('/doctor/prescriptions', {
+    const response = await apiFetch('/doctor/prescriptions', {
       method: 'POST',
       body: JSON.stringify(data),
     });
+    console.log('✅ Server response:', response);
     form.reset();
+    // Reset medicine list (if function exists)
+    if (typeof window.resetPrescriptionForm === 'function') {
+      window.resetPrescriptionForm();
+    }
     alert('Prescription created successfully!');
+    // Reload appointments to update status if needed
+    if (typeof loadAppointments === 'function') loadAppointments();
   } catch (err) {
+    console.error('❌ Prescription error:', err);
     showError('Create prescription failed: ' + err.message);
   }
 });
@@ -389,3 +400,4 @@ window.loadLabPatients = loadLabPatients;
 window.openPatientHistoryModal = openPatientHistoryModal;
 window.closeHistoryModal = closeHistoryModal;
 window.updateStatus = updateStatus;
+
